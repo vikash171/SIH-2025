@@ -12,10 +12,12 @@
  */
 
 import { useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import Profile from './Profile';
 
 const Homepage = ({ onNavigate }) => {
     const [showLearningPath, setShowLearningPath] = useState(false);
+    const { t } = useLanguage();
 
     const goToLearn = () => {
         onNavigate('learn');
@@ -87,12 +89,12 @@ const Homepage = ({ onNavigate }) => {
                                 <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow theme-primary">
                                     <span className="text-5xl">🚀</span>
                                 </div>
-                                <h2 className="text-4xl font-bold mb-4 theme-text">Welcome Back, Alex!</h2>
-                                <p className="text-xl opacity-80 mb-2">Ready for your next STEM adventure?</p>
+                                <h2 className="text-4xl font-bold mb-4 theme-text">{t('welcomeBack')}, Alex!</h2>
+                                <p className="text-xl opacity-80 mb-2">{t('readyForAdventure')}</p>
                                 <div className="flex items-center justify-center space-x-4 text-sm">
                                     <div className="flex items-center space-x-2 theme-card px-4 py-2 rounded-full shadow-sm">
                                         <span className="text-orange-500">🔥</span>
-                                        <span className="font-semibold">7-day streak</span>
+                                        <span className="font-semibold">7 {t('dayStreak')}</span>
                                     </div>
                                     <div className="flex items-center space-x-2 theme-card px-4 py-2 rounded-full shadow-sm">
                                         <span className="text-purple-500">⭐</span>
@@ -111,8 +113,8 @@ const Homepage = ({ onNavigate }) => {
                                 <div className="theme-card rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                                     <div className="text-center mb-6">
                                         <div className="text-5xl animate-pulse mb-4">⚡</div>
-                                        <h3 className="text-xl font-bold theme-text mb-2">Continue Journey</h3>
-                                        <p className="opacity-70">Physics Fun - Wave Lab</p>
+                                        <h3 className="text-xl font-bold theme-text mb-2">{t('continueJourney')}</h3>
+                                        <p className="opacity-70">{t('physics')} Fun - Wave Lab</p>
                                         <div className="flex items-center justify-center mt-3">
                                             <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                                                 <div className="h-full rounded-full transition-all duration-1000 theme-primary" style={{ width: '75%' }}></div>
@@ -124,7 +126,7 @@ const Homepage = ({ onNavigate }) => {
                                         onClick={goToLearn}
                                         className="w-full py-3 rounded-2xl text-lg font-bold text-white transition-all transform hover:scale-105 shadow-lg theme-primary"
                                     >
-                                        Resume 🎯
+                                        {t('resume')} 🎯
                                     </button>
                                 </div>
 
@@ -132,8 +134,8 @@ const Homepage = ({ onNavigate }) => {
                                 <div className="theme-card rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                                     <div className="text-center mb-6">
                                         <div className="text-5xl animate-bounce mb-4">✨</div>
-                                        <h3 className="text-xl font-bold theme-text mb-2">New Adventure</h3>
-                                        <p className="opacity-70">Explore new subjects</p>
+                                        <h3 className="text-xl font-bold theme-text mb-2">{t('newAdventure')}</h3>
+                                        <p className="opacity-70">{t('exploreNewSubjects')}</p>
                                         <div className="flex items-center justify-center mt-3 space-x-3">
                                             <span className="text-green-500 text-lg">🧪</span>
                                             <span className="text-blue-500 text-lg">🧮</span>
@@ -144,7 +146,7 @@ const Homepage = ({ onNavigate }) => {
                                         onClick={startNewChallenge}
                                         className="w-full py-3 rounded-2xl text-lg font-bold text-white transition-all transform hover:scale-105 shadow-lg theme-action"
                                     >
-                                        Start New 🚀
+                                        {t('startNew')} 🚀
                                     </button>
                                 </div>
                             </div>
@@ -157,7 +159,7 @@ const Homepage = ({ onNavigate }) => {
                                 >
                                     <div className="text-center">
                                         <div className="text-2xl font-bold theme-text">12</div>
-                                        <div className="text-xs opacity-70">Games</div>
+                                        <div className="text-xs opacity-70">{t('games')}</div>
                                     </div>
                                 </button>
                                 <button
@@ -181,7 +183,7 @@ const Homepage = ({ onNavigate }) => {
                                 <div className="theme-card rounded-xl p-4 shadow-sm">
                                     <div className="text-center">
                                         <div className="text-2xl font-bold theme-text">87%</div>
-                                        <div className="text-xs opacity-70">Score</div>
+                                        <div className="text-xs opacity-70">{t('score')}</div>
                                     </div>
                                 </div>
                             </div>

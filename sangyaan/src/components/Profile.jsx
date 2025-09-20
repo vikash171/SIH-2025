@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Profile = ({
     userName = "Alex Johnson",
@@ -23,7 +24,7 @@ const Profile = ({
 }) => {
     const [showProfile, setShowProfile] = useState(false);
     const [currentTheme, setCurrentTheme] = useState('playful');
-    const [currentLanguage, setCurrentLanguage] = useState('en');
+    const { currentLanguage, changeLanguage, t, availableLanguages } = useLanguage();
 
     useEffect(() => {
         // Set initial theme
@@ -39,11 +40,7 @@ const Profile = ({
         document.documentElement.setAttribute('data-theme', theme);
     };
 
-    const changeLanguage = (language) => {
-        setCurrentLanguage(language);
-        console.log('Language changed to:', language);
-        // Handle language change logic here
-    };
+    // Language change is now handled by the context
 
     const handleLogout = () => {
         alert('Logging out...');
@@ -69,11 +66,7 @@ const Profile = ({
         };
     }, [showProfile]);
 
-    const languages = {
-        en: { flag: '🇺🇸', name: 'English' },
-        hi: { flag: '🇮🇳', name: 'हिंदी' },
-        or: { flag: '🇮🇳', name: 'ଓଡ଼ିଆ' }
-    };
+    // Languages are now provided by the context
 
     return (
         <div className="profile-container relative">
@@ -109,14 +102,14 @@ const Profile = ({
                             <div className="text-2xl font-bold theme-text">{userXP.toLocaleString()}</div>
                             <div className="text-xs opacity-70 flex items-center justify-center">
                                 <span className="text-purple-500 mr-1">⭐</span>
-                                <span>Total XP</span>
+                                <span>{t('totalXP')}</span>
                             </div>
                         </div>
                         <div className="text-center">
                             <div className="text-2xl font-bold theme-text">{userStreak}</div>
                             <div className="text-xs opacity-70 flex items-center justify-center">
                                 <span className="text-orange-500 mr-1">🔥</span>
-                                <span>Day Streak</span>
+                                <span>{t('dayStreak')}</span>
                             </div>
                         </div>
                     </div>
@@ -127,14 +120,14 @@ const Profile = ({
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 <span className="text-lg">🌐</span>
-                                <span className="font-medium">Language</span>
+                                <span className="font-medium">{t('language')}</span>
                             </div>
                             <select
                                 value={currentLanguage}
                                 onChange={(e) => changeLanguage(e.target.value)}
                                 className="bg-gray-100 rounded-xl px-3 py-2 text-sm border-none outline-none"
                             >
-                                {Object.entries(languages).map(([code, lang]) => (
+                                {Object.entries(availableLanguages).map(([code, lang]) => (
                                     <option key={code} value={code}>
                                         {lang.flag} {lang.name}
                                     </option>
@@ -146,7 +139,7 @@ const Profile = ({
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 <span className="text-lg">🎨</span>
-                                <span className="font-medium">Theme</span>
+                                <span className="font-medium">{t('theme')}</span>
                             </div>
                             <div className="flex space-x-2">
                                 <button
@@ -179,7 +172,7 @@ const Profile = ({
                             className="w-full flex items-center space-x-2 p-3 rounded-xl hover:bg-gray-100 transition-colors"
                         >
                             <span className="text-lg">⚙️</span>
-                            <span className="font-medium">Settings</span>
+                            <span className="font-medium">{t('settings')}</span>
                         </button>
 
                         {/* Logout Button */}
@@ -188,7 +181,7 @@ const Profile = ({
                             className="w-full flex items-center space-x-2 p-3 rounded-xl hover:bg-red-50 transition-colors text-red-600"
                         >
                             <span className="text-lg">🚪</span>
-                            <span className="font-medium">Sign Out</span>
+                            <span className="font-medium">{t('signOut')}</span>
                         </button>
                     </div>
                 </div>

@@ -50,9 +50,12 @@ src/
 │   ├── Class.jsx         # Individual class cards with details
 │   ├── VirtualLab.jsx    # Virtual lab page using Lab component
 │   ├── Lab.jsx           # Individual lab cards with interactions
-│   └── Leaderboard.jsx   # Leaderboard page (placeholder)
+│   ├── Leaderboard.jsx   # Leaderboard with tab-based vertical rankings
+│   └── Rank.jsx          # Individual rank component for leaderboard entries
+├── contexts/
+│   └── LanguageContext.jsx # Language management and translation system
 ├── assets/               # Static assets
-├── App.jsx              # Root component with navigation
+├── App.jsx              # Root component with navigation and language provider
 ├── db.js                # IndexedDB configuration
 ├── index.css            # Global styles and theme variables
 └── main.jsx             # App entry point
@@ -109,10 +112,10 @@ This project uses Tailwind CSS v4 with the official Vite plugin:
 - **Class.jsx**: Individual class cards with details
 - **Features**: Single active class, progress tracking, quick actions
 
-### 🏆 Leaderboard (`Leaderboard.jsx`)
-- **Placeholder Page**: Ready for future leaderboard implementation
-- **Stats Display**: Current rank, XP, achievements
-- **Clean Design**: Consistent with app theme
+### 🏆 Leaderboard (Modular Components)
+- **Leaderboard.jsx**: Main leaderboard page with tab navigation
+- **Rank.jsx**: Individual rank entries with user info and styling
+- **Features**: Personal/School/Global rankings, vertical layout, user highlighting
 
 ### 🧭 Navigation
 - **5-Tab Navigation**: Home, Learn, Labs, Ranks, Class
@@ -124,15 +127,31 @@ This project uses Tailwind CSS v4 with the official Vite plugin:
 ### Component Hierarchy
 - **Page Components**: Main containers (Learn.jsx, Classroom.jsx, etc.)
 - **Shared Components**: Reusable across pages (Profile.jsx)
-- **Feature Components**: Reusable UI elements (Level.jsx, Class.jsx, Lab.jsx)
+- **Feature Components**: Reusable UI elements (Level.jsx, Class.jsx, Lab.jsx, Rank.jsx)
 - **Layout Components**: Structure managers (Level_view.jsx, Learn_header.jsx)
 
 ### Profile Component Features
 - **Theme Selection**: Three accessible themes (Playful Growth, Calm Focus, High Contrast)
-- **Language Options**: English, Hindi (हिंदी), Odia (ଓଡ଼ିଆ)
+- **Language Options**: English, Hindi (हिंदी), Odia (ଓଡ଼ିଆ) with full translation support
 - **User Stats**: XP points and streak tracking
 - **Settings Access**: Quick access to app settings
 - **Consistent Design**: Used across all main pages
+
+### Language System
+- **Multi-language Support**: Full translation system for English, Hindi, and Odia
+- **Context-based Translation**: Uses React Context for global language management
+- **Persistent Language**: Saves user's language preference in localStorage
+- **Math/Number Preservation**: Numbers and mathematical symbols remain unchanged
+- **Dynamic Switching**: Real-time language switching without page reload
+
+### Leaderboard System
+- **Modular Rank Component**: Reusable rank entries with name, avatar, and position
+- **Personal Rankings**: Individual stats, achievements, and progress tracking
+- **School Leaderboard**: Class-based vertical rankings
+- **Global Rankings**: Worldwide competition with country flags and schools
+- **Tab Navigation**: Clean switching between different leaderboard types
+- **User Highlighting**: Current user's position clearly marked with special styling
+- **Vertical Layout**: Simple, clean list-based rankings without complex podiums
 
 ### Mock Data Structure
 - **Single Data Source**: One mock item per component type
