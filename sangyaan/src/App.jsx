@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import Homepage from './components/Homepage';
 import Classroom from './components/Classroom';
 import Learn from './components/Learn';
 import VirtualLab from './components/VirtualLab';
 import Leaderboard from './components/Leaderboard';
 
-function App() {
+const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('homepage');
+  const { t } = useLanguage();
 
   const navigate = (page) => {
     setCurrentPage(page);
@@ -43,7 +45,7 @@ function App() {
                 }`}
             >
               <span className="text-xl mb-1">🏠</span>
-              <span className="text-xs font-medium">Home</span>
+              <span className="text-xs font-medium">{t('home')}</span>
             </button>
 
             <button
@@ -52,7 +54,7 @@ function App() {
                 }`}
             >
               <span className="text-xl mb-1">📚</span>
-              <span className="text-xs font-medium">Learn</span>
+              <span className="text-xs font-medium">{t('learn')}</span>
             </button>
 
             <button
@@ -61,7 +63,7 @@ function App() {
                 }`}
             >
               <span className="text-xl mb-1">🧪</span>
-              <span className="text-xs font-medium">Labs</span>
+              <span className="text-xs font-medium">{t('labs')}</span>
             </button>
 
             <button
@@ -70,7 +72,7 @@ function App() {
                 }`}
             >
               <span className="text-xl mb-1">🏆</span>
-              <span className="text-xs font-medium">Ranks</span>
+              <span className="text-xs font-medium">{t('ranks')}</span>
             </button>
 
             <button
@@ -79,7 +81,7 @@ function App() {
                 }`}
             >
               <span className="text-xl mb-1">🎓</span>
-              <span className="text-xs font-medium">Class</span>
+              <span className="text-xs font-medium">{t('class')}</span>
             </button>
           </div>
         </div>
@@ -88,6 +90,14 @@ function App() {
       {/* Bottom padding to account for fixed navigation */}
       <div className="h-20"></div>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 
