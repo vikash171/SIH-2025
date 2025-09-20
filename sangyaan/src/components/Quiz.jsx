@@ -1,369 +1,411 @@
 /**
- * Quiz Component
- * 
- * Purpose: Interactive quiz interface for learning levels
- * Features:
- * - MCQ and numerical questions
- * - Progress tracking
- * - Level unlocking based on performance
- * - Uses que.json data structure
+ * Quiz Component - Gamified Learning Interface (left-half of design)
+ * - Tailwind-only styling (no external CSS)
+ * - Uses dummy data for now; topicId maps to a sample set
+ * - After finishing, shows a Reward view (power-ups, achievements, leaderboard)
  */
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 
-const Quiz = ({ topicId, onQuizComplete, onBack }) => {
-    const [currentQuestion, setCurrentQuestion] = useState(null);
-    const [selectedAnswer, setSelectedAnswer] = useState('');
-    const [numericalAnswer, setNumericalAnswer] = useState('');
-    const [showResult, setShowResult] = useState(false);
-    const [isCorrect, setIsCorrect] = useState(false);
-    const [quizData, setQuizData] = useState(null);
-    const [progress, setProgress] = useState({ current: 0, total: 0 });
-    const [score, setScore] = useState(0);
-    const [timeStarted, setTimeStarted] = useState(null);
-
-    // Sample quiz data based on que.json structure
-    const sampleQuizData = {
-        "phy_8_gravity_01": {
-            "topic_id": "phy_8_gravity_01",
-            "topic_name": "Gravity and Forces",
-            "questions": [
-                {
-                    "qid": "phy_8_gravity_01_q1",
-                    "type": "mcq",
-                    "ques": "What happens to gravitational force if the mass of one object doubles?",
-                    "mcq": [
-                        "Force doubles",
-                        "Force halves",
-                        "Force remains same",
-                        "Force becomes zero"
-                    ],
-                    "answer": { "mcq": 0 },
-                    "difficulty": "easy",
-                    "special": false,
-                    "prev_node": "theory",
-                    "next_node": "phy_8_gravity_01_q2",
-                    "status": "unattempted"
-                },
-                {
-                    "qid": "phy_8_gravity_01_q2",
-                    "type": "numerical",
-                    "ques": "Calculate the gravitational force between two objects of mass 2kg and 3kg separated by 1m distance. (G = 6.67 × 10⁻¹¹ N⋅m²/kg²)",
-                    "answer": { "value": "4.0e-11" },
-                    "difficulty": "medium",
-                    "special": false,
-                    "prev_node": "phy_8_gravity_01_q1",
-                    "next_node": "boss_q1",
-                    "status": "unattempted"
-                },
-                {
-                    "qid": "boss_q1",
-                    "type": "mcq",
-                    "ques": "Which factor affects gravitational force the most when doubled?",
-                    "mcq": [
-                        "Distance (force becomes 1/4)",
-                        "Mass (force doubles)",
-                        "Shape of objects",
-                        "Temperature"
-                    ],
-                    "answer": { "mcq": 0 },
-                    "difficulty": "boss",
-                    "special": true,
-                    "prev_node": "phy_8_gravity_01_q2",
-                    "next_node": null,
-                    "status": "unattempted"
-                }
-            ]
+const SAMPLE_SETS = {
+    math_algebra_01: [
+        {
+            question: 'What is the value of x in the equation: 2x + 5 = 15?',
+            answers: ['x = 5', 'x = 10', 'x = 7.5', 'x = 20'],
+            correct: 0,
+            hint: 'Move 5 to the right side and divide by 2.'
         },
-        "math_algebra_01": {
-            "topic_id": "math_algebra_01",
-            "topic_name": "Basic Algebra",
-            "questions": [
-                {
-                    "qid": "math_algebra_01_q1",
-                    "type": "mcq",
-                    "ques": "What is the value of x in the equation: 2x + 5 = 15?",
-                    "mcq": ["x = 5", "x = 10", "x = 7.5", "x = 20"],
-                    "answer": { "mcq": 0 },
-                    "difficulty": "easy",
-                    "special": false,
-                    "prev_node": "theory",
-                    "next_node": "math_algebra_01_q2",
-                    "status": "unattempted"
-                },
-                {
-                    "qid": "math_algebra_01_q2",
-                    "type": "numerical",
-                    "ques": "Solve for y: 3y - 7 = 14",
-                    "answer": { "value": "7" },
-                    "difficulty": "medium",
-                    "special": false,
-                    "prev_node": "math_algebra_01_q1",
-                    "next_node": null,
-                    "status": "unattempted"
-                }
-            ]
+        {
+            question: 'Solve for y: 3y - 7 = 14',
+            answers: ['y = 7', 'y = 21', 'y = 3', 'y = 14/3'],
+            correct: 0,
+            hint: 'Add 7 to both sides, then divide by 3.'
+        },
+        {
+            question: 'Simplify: (x + 3) + (x - 5)',
+            answers: ['2x - 2', '2x + 8', 'x - 2', 'x + 8'],
+            correct: 0,
+            hint: 'Combine like terms: x + x and 3 - 5.'
+        },
+        {
+            question: 'What is the solution of 5x = 25?',
+            answers: ['x = 10', 'x = 5', 'x = 1', 'x = 0'],
+            correct: 1,
+            hint: 'Divide both sides by 5.'
+        },
+        {
+            question: 'If x = 3, evaluate 2x^2 - x',
+            answers: ['15', '18', '3', '12'],
+            correct: 0,
+            hint: '2*(9) - 3 = 18 - 3.'
         }
-    };
-
-    useEffect(() => {
-        loadQuizData();
-    }, [topicId]);
-
-    const loadQuizData = () => {
-        // In a real app, this would fetch from an API or file
-        const data = sampleQuizData[topicId];
-        if (data) {
-            setQuizData(data);
-            setCurrentQuestion(data.questions[0]);
-            setProgress({ current: 1, total: data.questions.length });
-            setTimeStarted(Date.now());
+    ],
+    phy_8_gravity_01: [
+        {
+            question: 'What is the SI unit of force?',
+            answers: ['Joule', 'Newton', 'Watt', 'Pascal'],
+            correct: 1,
+            hint: 'Named after the scientist who formulated the laws of motion.'
+        },
+        {
+            question: 'Which of these is a vector quantity?',
+            answers: ['Speed', 'Distance', 'Velocity', 'Time'],
+            correct: 2,
+            hint: 'Has magnitude and direction.'
+        },
+        {
+            question: 'Acceleration due to gravity on Earth (approx.)?',
+            answers: ['9.8 m/s²', '10 m/s²', '8.9 m/s²', '9.8 m/s'],
+            correct: 0,
+            hint: 'A constant near the surface of the Earth.'
+        },
+        {
+            question: 'For every action, there is an equal and opposite reaction.',
+            answers: ["Newton's First Law", "Newton's Second Law", "Newton's Third Law", 'Conservation of Energy'],
+            correct: 2,
+            hint: 'Explains recoil and push-back effects.'
+        },
+        {
+            question: 'Formula for kinetic energy?',
+            answers: ['mgh', '1/2 mv²', 'mv', 'mgh/t'],
+            correct: 1,
+            hint: 'Depends on mass and square of velocity.'
         }
-    };
+    ]
+};
 
-    const handleMCQAnswer = (answerIndex) => {
-        setSelectedAnswer(answerIndex);
-    };
+const mapTopicToSample = (topicId) => {
+    // Fallback to algebra set if unknown
+    if (SAMPLE_SETS[topicId]) return topicId;
+    return 'math_algebra_01';
+};
 
-    const handleNumericalAnswer = (value) => {
-        setNumericalAnswer(value);
-    };
+const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
+    const setKey = useMemo(() => mapTopicToSample(topicId), [topicId]);
+    const questions = useMemo(() => SAMPLE_SETS[setKey], [setKey]);
 
-    const submitAnswer = () => {
-        if (!currentQuestion) return;
+    const [index, setIndex] = useState(0);
+    const [selected, setSelected] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
+    const [score, setScore] = useState(0);
+    const [streak, setStreak] = useState(0);
+    const [showHint, setShowHint] = useState(false);
+    const [completed, setCompleted] = useState(false);
 
-        let correct = false;
+    const total = questions.length;
+    const progressPct = Math.round(((index + 1) / total) * 100);
 
-        if (currentQuestion.type === 'mcq') {
-            correct = selectedAnswer === currentQuestion.answer.mcq;
-        } else if (currentQuestion.type === 'numerical') {
-            const userAnswer = parseFloat(numericalAnswer);
-            const correctAnswer = parseFloat(currentQuestion.answer.value);
-            // Allow for small floating point differences
-            correct = Math.abs(userAnswer - correctAnswer) < 0.01 ||
-                numericalAnswer.toLowerCase() === currentQuestion.answer.value.toLowerCase();
-        }
+    const current = questions[index];
 
-        setIsCorrect(correct);
-        setShowResult(true);
-
-        if (correct) {
-            setScore(prev => prev + 1);
-        }
-
-        // Update question status
-        currentQuestion.status = correct ? 'correct' : 'incorrect';
-        currentQuestion.stats = {
-            time_taken: Date.now() - timeStarted,
-            attempts: (currentQuestion.stats?.attempts || 0) + 1
-        };
-    };
-
-    const nextQuestion = () => {
-        if (!currentQuestion || !quizData) return;
-
-        const currentIndex = quizData.questions.findIndex(q => q.qid === currentQuestion.qid);
-        const nextIndex = currentIndex + 1;
-
-        if (nextIndex < quizData.questions.length) {
-            // Move to next question
-            setCurrentQuestion(quizData.questions[nextIndex]);
-            setProgress({ current: nextIndex + 1, total: quizData.questions.length });
-            setSelectedAnswer('');
-            setNumericalAnswer('');
-            setShowResult(false);
-            setTimeStarted(Date.now());
+    const submit = () => {
+        if (submitted || selected == null) return;
+        const isCorrect = selected === current.correct;
+        setSubmitted(true);
+        if (isCorrect) {
+            setScore((s) => s + 1);
+            setStreak((s) => s + 1);
         } else {
-            // Quiz completed
-            completeQuiz();
+            setStreak(0);
         }
     };
 
-    const completeQuiz = () => {
-        const finalScore = score;
-        const totalQuestions = quizData.questions.length;
-        const percentage = (finalScore / totalQuestions) * 100;
-
-        // Determine if level should be unlocked (70% or higher)
-        const levelUnlocked = percentage >= 70;
-
-        onQuizComplete({
-            topicId,
-            score: finalScore,
-            total: totalQuestions,
-            percentage,
-            levelUnlocked,
-            questions: quizData.questions
-        });
-    };
-
-    const getDifficultyColor = (difficulty) => {
-        switch (difficulty) {
-            case 'easy': return 'text-green-600 bg-green-100';
-            case 'medium': return 'text-yellow-600 bg-yellow-100';
-            case 'boss': return 'text-red-600 bg-red-100';
-            default: return 'text-gray-600 bg-gray-100';
+    const next = () => {
+        if (!submitted) return;
+        if (index + 1 < total) {
+            setIndex((i) => i + 1);
+            setSelected(null);
+            setSubmitted(false);
+      
+            setShowHint(false);
+        } else {
+            setCompleted(true);
+            if (onQuizComplete) {
+                onQuizComplete({ topicId: setKey, score, total, percentage: (score / total) * 100 });
+            }
         }
     };
 
-    const getDifficultyIcon = (difficulty) => {
-        switch (difficulty) {
-            case 'easy': return '🟢';
-            case 'medium': return '🟡';
-            case 'boss': return '🔴';
-            default: return '⚪';
-        }
+    const previous = () => {
+        if (index === 0) return;
+        setIndex((i) => i - 1);
+        setSelected(null);
+        setSubmitted(false);
+    
+        setShowHint(false);
     };
 
-    if (!quizData || !currentQuestion) {
+    if (completed) {
+        // Reward view (right-half widgets as a summary screen)
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">📚</span>
+            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-rose-700 to-amber-400 p-4 md:p-8">
+                <div className="max-w-5xl mx-auto text-white">
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 md:p-8 mb-8">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h1 className="text-3xl md:text-4xl font-bold flex items-center">
+                                    <span className="mr-3">🏁</span>
+                                    Quest Complete
+                                </h1>
+                                <p className="opacity-80 mt-1">Nice work! Here are your rewards and highlights.</p>
+                            </div>
+                            <div className="flex items-center gap-6">
+                                <div className="text-center">
+                                    <div className="text-2xl font-bold">{score}</div>
+                                    <div className="text-xs opacity-80">SCORE</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-2xl font-bold">{Math.round((score / total) * 100)}%</div>
+                                    <div className="text-xs opacity-80">ACCURACY</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-2xl font-bold">{streak}</div>
+                                    <div className="text-xs opacity-80">BEST STREAK</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-800">Loading Quiz...</h2>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 lg:col-span-1">
+                            <h3 className="text-xl font-bold mb-4 flex items-center">
+                                <span className="mr-2">⚡</span> Power-ups
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <span>🕒</span>
+                                        <span>Time Freeze</span>
+                                    </div>
+                                    <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">+1</span>
+                                </div>
+                                <div className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <span>👁️</span>
+                                        <span>Reveal Answer</span>
+                                    </div>
+                                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">+1</span>
+                                </div>
+                                <div className="flex items-center justify-between p-3 bg-white/10 rounded-lg">
+                                    <div className="flex items-center gap-2">
+                                        <span>🛡️</span>
+                                        <span>Shield</span>
+                                    </div>
+                                    <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">+1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 lg:col-span-1">
+                            <h3 className="text-xl font-bold mb-4 flex items-center">
+                                <span className="mr-2">🏆</span> Achievements
+                            </h3>
+                            <div className="grid grid-cols-3 gap-3">
+                                <div className="text-center">
+                                    <div className="bg-yellow-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1">⭐</div>
+                                    <span className="text-xs">First Win</span>
+                                </div>
+                                <div className="text-center">
+                                    <div className="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1">🔥</div>
+                                    <span className="text-xs">On Fire</span>
+                                </div>
+                                <div className="text-center opacity-50">
+                                    <div className="bg-gray-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1">🔒</div>
+                                    <span className="text-xs">Locked</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 lg:col-span-1">
+                            <h3 className="text-xl font-bold mb-4 flex items-center">
+                                <span className="mr-2">👑</span> Top Players
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center">
+                                    <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center mr-3 text-black font-bold">1</div>
+                                    <div className="flex-1">
+                                        <div className="font-medium">Alex Johnson</div>
+                                        <div className="text-xs opacity-70">2,450 pts</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center mr-3 text-black font-bold">2</div>
+                                    <div className="flex-1">
+                                        <div className="font-medium">Sam Wilson</div>
+                                        <div className="text-xs opacity-70">2,100 pts</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center mr-3 text-white font-bold">3</div>
+                                    <div className="flex-1">
+                                        <div className="font-medium">Taylor Reed</div>
+                                        <div className="text-xs opacity-70">1,980 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 flex justify-between">
+                        <button onClick={onBack} className="px-6 py-3 rounded-full bg-white/10 border border-white/30 hover:bg-white/20 transition">
+                            ← Back to Levels
+                        </button>
+                        <button onClick={onBack} className="px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold transition">
+                            Continue Journey →
+                        </button>
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-rose-700 to-amber-400 p-4 md:p-8">
+            <div className="max-w-5xl mx-auto">
                 {/* Header */}
-                <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <button
-                            onClick={onBack}
-                            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition"
-                        >
-                            <span>←</span>
-                            <span>Back to Levels</span>
-                        </button>
+                <header className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 text-white mb-6">
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                        <div className="mb-4 md:mb-0">
+                            <h1 className="text-3xl md:text-4xl font-bold flex items-center">
+                                <span className="mr-3">🧠</span>
+                                Quiz
+                            </h1>
+                            <p className="text-sm md:text-base mt-1 opacity-80">Master concepts through gamified learning</p>
+                        </div>
 
-                        <div className="flex items-center space-x-4">
-                            <div className="text-sm text-gray-600">
-                                Question {progress.current} of {progress.total}
+                        <div className="flex items-center space-x-6">
+                            <div className="text-center">
+                                <div className="text-2xl font-bold">{score}</div>
+                                <div className="text-xs opacity-80">SCORE</div>
                             </div>
-                            <div className="text-sm font-semibold text-blue-600">
-                                Score: {score}/{progress.total}
+                            <div className="text-center">
+                                <div className="text-2xl font-bold">{streak}</div>
+                                <div className="text-xs opacity-80">STREAK</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-2xl font-bold">{index + 1}</div>
+                                <div className="text-xs opacity-80">Q INDEX</div>
                             </div>
                         </div>
                     </div>
+                </header>
 
+                {/* Main Content - Left Half of original design */}
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 md:p-8 text-white">
                     {/* Progress Bar */}
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${(progress.current / progress.total) * 100}%` }}
-                        ></div>
-                    </div>
-                </div>
-
-                {/* Question Card */}
-                <div className="bg-white rounded-xl p-8 shadow-sm">
-                    <div className="mb-6">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <span className="text-2xl">{getDifficultyIcon(currentQuestion.difficulty)}</span>
-                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getDifficultyColor(currentQuestion.difficulty)}`}>
-                                {currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1)}
-                                {currentQuestion.special && ' Boss'}
+                    <div className="mb-8">
+                        <div className="flex justify-between text-sm mb-2">
+                            <span>
+                                Question <span>{index + 1}</span> of <span>{total}</span>
                             </span>
+                            <span>{progressPct}%</span>
                         </div>
-
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                            {currentQuestion.ques}
-                        </h2>
+                        <div className="w-full bg-white/20 rounded-full h-3">
+                            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-3 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                        </div>
                     </div>
 
-                    {/* Answer Options */}
-                    {currentQuestion.type === 'mcq' && (
-                        <div className="space-y-3 mb-8">
-                            {currentQuestion.mcq.map((option, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleMCQAnswer(index)}
-                                    disabled={showResult}
-                                    className={`w-full p-4 text-left rounded-lg border-2 transition-all ${selectedAnswer === index
-                                            ? 'border-blue-500 bg-blue-50'
-                                            : 'border-gray-200 hover:border-gray-300'
-                                        } ${showResult ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                                >
-                                    <div className="flex items-center space-x-3">
-                                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${selectedAnswer === index ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
-                                            }`}>
-                                            {selectedAnswer === index && <span className="text-white text-sm">✓</span>}
-                                        </div>
-                                        <span className="font-medium">{option}</span>
+                    {/* Question Area */}
+                    <div className="mb-8">
+                        <div className="flex items-center mb-4">
+                            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">💡</div>
+                            <h2 className="text-xl md:text-2xl font-semibold">Challenge</h2>
+                        </div>
+
+                        <div className="bg-white/10 rounded-xl p-6 mb-6">
+                            <p className="text-lg md:text-xl">{current.question}</p>
+                        </div>
+
+                                    {/* Answer Options */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
+                                        {current.answers.map((ans, i) => {
+                                            const isSelected = selected === i;
+                                            const isCorrect = submitted && i === current.correct;
+                                            const isWrong = submitted && isSelected && i !== current.correct;
+                                            return (
+                                                <button
+                                                    key={i}
+                                                    onClick={() => !submitted && setSelected(i)}
+                                                    className={`group rounded-2xl p-5 text-left transition-all border ${
+                                                        isCorrect
+                                                            ? 'bg-green-500/90 border-green-400 text-white shadow-lg shadow-green-900/30'
+                                                            : isWrong
+                                                            ? 'bg-red-500/90 border-red-400 text-white shadow-lg shadow-red-900/30'
+                                                            : isSelected
+                                                            ? 'bg-white/20 border-white/40 shadow-md'
+                                                            : 'bg-white/10 hover:bg-white/15 border-white/20 hover:border-white/40 hover:shadow-md'
+                                                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70`}
+                                                >
+                                                    <div className="flex items-start gap-3">
+                                                        <div className={`rounded-full w-9 h-9 flex items-center justify-center font-bold shrink-0 ${
+                                                            isCorrect || isWrong ? 'bg-white/20' : 'bg-white/20 group-hover:bg-white/25'
+                                                        }`}>
+                                                            {String.fromCharCode(65 + i)}
+                                                        </div>
+                                                        <span className="leading-relaxed text-base md:text-lg">
+                                                            {ans}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
                                     </div>
-                                </button>
-                            ))}
-                        </div>
-                    )}
 
-                    {currentQuestion.type === 'numerical' && (
-                        <div className="mb-8">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Enter your numerical answer:
-                            </label>
-                            <input
-                                type="text"
-                                value={numericalAnswer}
-                                onChange={(e) => handleNumericalAnswer(e.target.value)}
-                                disabled={showResult}
-                                placeholder="Enter your answer (e.g., 4.0e-11 or 7)"
-                                className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
-                            />
-                        </div>
-                    )}
-
-                    {/* Result Display */}
-                    {showResult && (
-                        <div className={`p-6 rounded-lg mb-6 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-                            }`}>
-                            <div className="flex items-center space-x-3 mb-3">
-                                <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
-                                <span className={`font-bold text-lg ${isCorrect ? 'text-green-800' : 'text-red-800'
-                                    }`}>
-                                    {isCorrect ? 'Correct!' : 'Incorrect'}
-                                </span>
-                            </div>
-
-                            {!isCorrect && (
-                                <div className="text-gray-700">
-                                    <strong>Correct answer:</strong> {' '}
-                                    {currentQuestion.type === 'mcq'
-                                        ? currentQuestion.mcq[currentQuestion.answer.mcq]
-                                        : currentQuestion.answer.value
-                                    }
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex justify-end space-x-4">
-                        {!showResult ? (
+                        {/* Hint Button */}
+                        <div className="mt-6 flex justify-center">
                             <button
-                                onClick={submitAnswer}
-                                disabled={
-                                    (currentQuestion.type === 'mcq' && selectedAnswer === '') ||
-                                    (currentQuestion.type === 'numerical' && numericalAnswer === '')
-                                }
-                                className="px-8 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                                className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-full flex items-center transition-all"
+                                onClick={() => setShowHint(true)}
+                                disabled={showHint}
                             >
-                                Submit Answer
+                                <span className="mr-2">❔</span>
+                                Need a Hint? (-10 points)
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Navigation Buttons */}
+                                <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-0 sm:justify-between">
+                                    <button className="bg-gray-600/90 hover:bg-gray-700 text-white py-3 px-6 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed" onClick={previous} disabled={index === 0}>
+                            ← Previous
+                        </button>
+                        {!submitted ? (
+                            <button
+                                            className={`bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-full transition-all ${
+                                    selected == null ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                                onClick={submit}
+                                disabled={selected == null}
+                            >
+                                Submit
                             </button>
                         ) : (
                             <button
-                                onClick={nextQuestion}
-                                className="px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition"
+                                            className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-full transition-all"
+                                onClick={next}
                             >
-                                {progress.current < progress.total ? 'Next Question' : 'Complete Quiz'}
+                                {index + 1 < total ? 'Next' : 'Finish'} →
                             </button>
                         )}
                     </div>
+                </div>
+
+                {/* Hint Modal */}
+                {showHint && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 max-w-md w-full mx-4 text-white">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-xl font-bold">Hint</h3>
+                                <button onClick={() => setShowHint(false)} className="hover:text-gray-200">✖</button>
+                            </div>
+                            <p className="mb-4">{current.hint}</p>
+                            <button onClick={() => setShowHint(false)} className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-full w-full">Got it!</button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Back to Levels */}
+                <div className="mt-6 flex justify-start">
+                    <button onClick={onBack} className="text-white/90 hover:text-white underline">← Back to Levels</button>
                 </div>
             </div>
         </div>
