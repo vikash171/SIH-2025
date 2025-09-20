@@ -1,23 +1,91 @@
-# React + Vite
+# STEM Quest - Sangyaan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A gamified STEM learning platform built with React, Vite, Tailwind CSS v4, and IndexedDB for offline functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Homepage**: Gamified dashboard with learning progress, XP tracking, and achievements
+- **Theme System**: Three accessible color themes (Playful Growth, Calm Focus, High Contrast)
+- **Learning Paths**: Visual progress tracking through STEM subjects
+- **Offline Support**: PWA with IndexedDB for offline functionality
+- **Responsive Design**: Works across desktop, tablet, and mobile devices
 
-## Tailwind CSS v4 setup
+## Tech Stack
 
-This project uses Tailwind CSS v4 with the official Vite plugin.
+- **React 19** - UI framework
+- **Vite** - Build tool and dev server
+- **Tailwind CSS v4** - Styling with custom theme system
+- **Dexie** - IndexedDB wrapper for offline data
+- **PWA** - Progressive Web App capabilities
 
-- Vite config: uses `@tailwindcss/vite` (see `vite.config.js`).
-- CSS entry: imports Tailwind via a single directive in `src/index.css`:
+## Getting Started
 
-	`@import "tailwindcss";`
+1. Install dependencies:
+```bash
+npm install
+```
 
-If you previously tried to use `tailwindcss()` as a PostCSS/Vite plugin, note that in v4 the PostCSS plugin moved and you should rely on the Vite plugin instead. No `postcss.config.js` is required for the basic setup.
+2. Start development server:
+```bash
+npm run dev
+```
 
-## Expanding the ESLint configuration
+3. Build for production:
+```bash
+npm run build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Structure
+
+```
+src/
+├── components/
+│   └── Homepage.jsx     # Main homepage component
+├── assets/              # Static assets
+├── App.jsx             # Root component
+├── db.js               # IndexedDB configuration
+├── index.css           # Global styles and theme variables
+└── main.jsx            # App entry point
+```
+
+## Theme System
+
+The application supports three accessibility-focused themes:
+
+1. **Playful Growth** (Default) - High energy, friendly colors for gamified learning
+2. **Calm Focus** - Blue-based palette for concentration and study sessions
+3. **High Contrast** - Enhanced accessibility for low-vision users
+
+Themes are implemented using CSS custom properties and can be switched dynamically.
+
+## Tailwind CSS v4 Setup
+
+This project uses Tailwind CSS v4 with the official Vite plugin:
+
+- Vite config: uses `@tailwindcss/vite` (see `vite.config.js`)
+- CSS entry: imports Tailwind via `@import "tailwindcss"` in `src/index.css`
+- Custom theme colors defined in `tailwind.config.js`
+
+## PWA Features
+
+- Offline functionality with service worker
+- App manifest for installation
+- IndexedDB for local data persistence
+- Responsive design for all device types
+
+## Development
+
+The homepage component (`src/components/Homepage.jsx`) includes:
+
+- Theme switching functionality
+- Profile dropdown with user stats
+- Learning path visualization
+- Progress tracking
+- Gamification elements (XP, badges, streaks)
+
+## Accessibility
+
+- WCAG 2.1 AA compliant color contrasts
+- Reduced motion support via `prefers-reduced-motion`
+- Screen reader compatible
+- Keyboard navigation support

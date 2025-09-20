@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Intentionally no viewport to render desktop-like on mobile for now -->
+    <title>Quiz Levels</title>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                500: '#4f46e5',
+                600: '#4338ca',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      .level-circle { transition: transform .15s ease, box-shadow .15s ease; }
+      .level-circle:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-800">
+    <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-10">
+      <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-xl font-bold text-brand-600">STEMQuest · Levels</h1>
+        <nav class="flex items-center gap-3">
+          <button id="btnMath" class="px-3 py-1.5 rounded-md text-sm font-medium bg-brand-500 text-white hover:bg-brand-600">Math</button>
+          <button id="btnScience" class="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-200 hover:bg-slate-300">Science</button>
+          <button id="btnReset" class="ml-2 px-3 py-1.5 rounded-md text-sm font-medium bg-rose-100 text-rose-700 hover:bg-rose-200">Reset</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 pt-8 pb-16">
+      <section class="mb-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-2 text-sm"><span class="inline-block w-3 h-3 rounded-full bg-green-500"></span> Completed</span>
+          <span class="inline-flex items-center gap-2 text-sm"><span class="inline-block w-3 h-3 rounded-full bg-brand-500"></span> Unlocked</span>
+          <span class="inline-flex items-center gap-2 text-sm"><span class="inline-block w-3 h-3 rounded-full bg-slate-300"></span> Locked</span>
+        </div>
+        <div id="progress" class="text-sm text-slate-600">0/0 completed</div>
+      </section>
+
+      <!-- Levels rail -->
+      <div id="levels" class="relative mx-auto max-w-md">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+
+    <script>
+      // --- Minimal demo data (aligned with files/data/*.json IDs) ---
+      const MATH_LEVELS = [
+        { id: 'math-01', title: 'Algebra · 1' },
+        { id: 'math-02', title: 'Geometry · Circle Area' },
+        { id: 'math-03', title: 'Roots · 144' },
+        { id: 'math-04', title: 'Order of Ops' },
+        { id: 'math-05', title: 'Pythagoras' },
+        { id: 'math-06', title: 'Percentages' },
+        { id: 'math-07', title: 'Linear · Solve y' },
+        { id: 'math-08', title: 'Perimeter' },
+        { id: 'math-09', title: 'Fractions' },
+        { id: 'math-10', title: 'Sequence' },
+        { id: 'math-11', title: 'Volume · Cube' },
+        { id: 'math-12', title: 'Powers' },
+        { id: 'math-13', title: 'Median' },
+        { id: 'math-14', title: 'Angles' },
+        { id: 'math-15', title: 'Inequalities' },
+      ]
+
+      const SCI_LEVELS = [
+        { id: 'sci-16', title: 'Water Symbol' },
+        { id: 'sci-17', title: 'Red Planet' },
+        { id: 'sci-18', title: 'Photosynthesis' },
+        { id: 'sci-19', title: 'SI · Force' },
+        { id: 'sci-20', title: 'States of Matter' },
+        { id: 'sci-21', title: 'Heart' },
+        { id: 'sci-22', title: 'Carbon Number' },
+        { id: 'sci-23', title: 'Seasons' },
+        { id: 'sci-24', title: 'Speed of Light' },
+        { id: 'sci-25', title: 'Exhaled Gas' },
+        { id: 'sci-26', title: 'Boiling Point' },
+        { id: 'sci-27', title: 'Largest Bone' },
+        { id: 'sci-28', title: 'Kinetic Energy' },
+        { id: 'sci-29', title: 'Element · Na' },
+        { id: 'sci-30', title: 'Battery Energy' },
+      ]
+
+      const SUBJECTS = {
+        math: MATH_LEVELS,
+        science: SCI_LEVELS,
+      }
+
+      const LS_KEY = 'stemquest.levels.progress'
+      function loadProgress() {
+        try { return JSON.parse(localStorage.getItem(LS_KEY)) || {} } catch { return {} }
+      }
+      function saveProgress(p) { localStorage.setItem(LS_KEY, JSON.stringify(p)) }
+
+      function ensureInit(subject) {
+        const p = loadProgress()
+        if (!p[subject]) {
+          const arr = SUBJECTS[subject]
+          p[subject] = {}
+          arr.forEach((lvl, i) => {
+            p[subject][lvl.id] = i === 0 ? 'unlocked' : 'locked'
+          })
+          saveProgress(p)
+        }
+        return p
+      }
+
+      let currentSubject = 'math'
+
+      function setActiveSubject(subj) {
+        currentSubject = subj
+        document.getElementById('btnMath').className = subj === 'math'
+          ? 'px-3 py-1.5 rounded-md text-sm font-medium bg-brand-500 text-white hover:bg-brand-600'
+          : 'px-3 py-1.5 rounded-md text-sm font-medium bg-slate-200 hover:bg-slate-300'
+        document.getElementById('btnScience').className = subj === 'science'
+          ? 'px-3 py-1.5 rounded-md text-sm font-medium bg-brand-500 text-white hover:bg-brand-600'
+          : 'px-3 py-1.5 rounded-md text-sm font-medium bg-slate-200 hover:bg-slate-300'
+        render()
+      }
+
+      function markComplete(subject, id) {
+        const p = ensureInit(subject)
+        p[subject][id] = 'complete'
+        // unlock next
+        const arr = SUBJECTS[subject]
+        const idx = arr.findIndex(l => l.id === id)
+        const next = arr[idx + 1]
+        if (next) p[subject][next.id] = p[subject][next.id] === 'complete' ? 'complete' : 'unlocked'
+        saveProgress(p)
+        render()
+      }
+
+      function resetProgress() {
+        localStorage.removeItem(LS_KEY)
+        ensureInit(currentSubject)
+        render()
+      }
+
+      function render() {
+        const levelsEl = document.getElementById('levels')
+        levelsEl.innerHTML = ''
+        const p = ensureInit(currentSubject)
+        const arr = SUBJECTS[currentSubject]
+
+        // Progress header
+        const statuses = Object.values(p[currentSubject])
+        const completed = statuses.filter(s => s === 'complete').length
+        document.getElementById('progress').textContent = `${completed}/${arr.length} completed`
+
+        // Vertical rail
+        const rail = document.createElement('div')
+        rail.className = 'relative flex flex-col items-center'
+
+        arr.forEach((lvl, i) => {
+          const status = p[currentSubject][lvl.id]
+          const color = status === 'complete' ? 'bg-green-500 text-white' : status === 'unlocked' ? 'bg-brand-500 text-white' : 'bg-slate-300 text-slate-600'
+          const ring = status === 'locked' ? 'ring-2 ring-slate-200' : 'ring-4 ring-white shadow'
+
+          const node = document.createElement('button')
+          node.className = `level-circle flex flex-col items-center justify-center w-20 h-20 rounded-full ${color} ${ring}`
+          node.title = lvl.title
+
+          const label = document.createElement('div')
+          label.className = 'text-xl font-bold'
+          label.textContent = i + 1
+          node.appendChild(label)
+
+          const small = document.createElement('div')
+          small.className = 'text-[10px] opacity-90 mt-0.5 px-2 text-center truncate w-16'
+          small.textContent = lvl.title
+          node.appendChild(small)
+
+          if (status !== 'locked') {
+            node.addEventListener('click', () => {
+              // In a real app, navigate to quiz route; for now, mark complete
+              markComplete(currentSubject, lvl.id)
+            })
+          } else {
+            node.classList.add('cursor-not-allowed')
+          }
+
+          rail.appendChild(node)
+
+          // Connector (except last)
+          if (i < arr.length - 1) {
+            const line = document.createElement('div')
+            line.className = 'w-1 h-10 bg-slate-300'
+            rail.appendChild(line)
+          }
+        })
+
+        levelsEl.appendChild(rail)
+      }
+
+      // Wire up buttons
+      window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('btnMath').addEventListener('click', () => setActiveSubject('math'))
+        document.getElementById('btnScience').addEventListener('click', () => setActiveSubject('science'))
+        document.getElementById('btnReset').addEventListener('click', resetProgress)
+        ensureInit('math'); ensureInit('science')
+        render()
+      })
+    </script>
+  </body>
+  </html>
