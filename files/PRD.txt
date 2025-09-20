@@ -68,3 +68,4 @@ The system must remain modular and lightweight: games, exercises, and content ar
 - Local Dexie DB for storing packs & telemetry. 
 - Sync mock API (upload stats, fetch manifest). 
 - Teacher dashboard (basic local stats view). 
+

@@ -5,34 +5,63 @@
  * Parent Component: App.jsx
  * 
  * Features:
- * - Shows single lab using Lab component
+ * - Shows multiple labs including Circuit Lab
  * - Clean, focused design
  * - Handles lab interactions
  * - Gamified stats display
  */
 
+import { useState } from 'react';
 import Lab from './Lab';
 import Profile from './Profile';
+import ChemistryLab from './ChemistryLab';
+import CircuitLab from './CircuitLab';
 
 const VirtualLab = ({ onNavigate }) => {
-    // Mock data - single lab for now
-    const mockLab = {
-        title: "Wave Interference Lab",
-        subject: "physics",
-        duration: "45 min",
-        difficulty: "intermediate",
-        description: "Study wave patterns and interference phenomena using interactive simulations",
-        isCompleted: false,
-        rating: 3
+    const [activeTab, setActiveTab] = useState('dashboard');
+
+    // Mock data for labs
+    const mockLabs = {
+        physics: {
+            title: "Wave Interference Lab",
+            subject: "physics",
+            duration: "45 min",
+            difficulty: "intermediate",
+            description: "Study wave patterns and interference phenomena using interactive simulations",
+            isCompleted: false,
+            rating: 3
+        },
+        chemistry: {
+            title: "Chemical Reactions Lab",
+            subject: "chemistry",
+            duration: "30 min",
+            difficulty: "beginner",
+            description: "Explore chemical reactions and predict products safely",
+            isCompleted: false,
+            rating: 0
+        },
+        electronics: {
+            title: "Circuit Building Lab",
+            subject: "electronics",
+            duration: "60 min",
+            difficulty: "intermediate",
+            description: "Build and test electronic circuits with virtual components",
+            isCompleted: false,
+            rating: 0
+        }
     };
 
     const handleLabClick = (labData) => {
         console.log('Starting lab:', labData);
-        alert(`Starting ${labData.title} - ${labData.difficulty} level`);
+        setActiveTab(labData.subject);
     };
 
     const handleBackClick = () => {
-        onNavigate('homepage');
+        if (activeTab === 'dashboard') {
+            onNavigate('homepage');
+        } else {
+            setActiveTab('dashboard');
+        }
     };
 
     return (
@@ -69,8 +98,8 @@ const VirtualLab = ({ onNavigate }) => {
                         <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <span className="text-purple-500 text-2xl">🧪</span>
                         </div>
-                        <div className="text-2xl font-bold theme-text">1</div>
-                        <div className="text-sm text-gray-600">Available Lab</div>
+                        <div className="text-2xl font-bold theme-text">3</div>
+                        <div className="text-sm text-gray-600">Available Labs</div>
                     </div>
 
                     <div className="theme-card rounded-xl p-6 shadow-sm text-center">
