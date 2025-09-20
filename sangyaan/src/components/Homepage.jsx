@@ -27,9 +27,6 @@ const Homepage = ({ onNavigate }) => {
         setShowLearningPath(false);
     };
 
-    const continueLevel = () => {
-        alert('Continuing Wave Interference level...');
-    };
 
     const startNewChallenge = () => {
         onNavigate('learn');
@@ -41,6 +38,9 @@ const Homepage = ({ onNavigate }) => {
 
     const goToClassroom = () => {
         onNavigate('classroom');
+    };
+    const goToEvents = () => {
+        onNavigate('events');
     };
 
     return (
@@ -178,6 +178,15 @@ const Homepage = ({ onNavigate }) => {
                                     <div className="text-center">
                                         <div className="text-2xl font-bold theme-text">#15</div>
                                         <div className="text-xs opacity-70">Rank</div>
+                                    </div>
+                                </button>
+                                <button
+                                    onClick={goToEvents}
+                                    className="theme-card rounded-xl p-4 shadow-sm hover:shadow-lg transition-all transform hover:scale-105"
+                                >
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold theme-text">📅</div>
+                                        <div className="text-xs opacity-70">{t('events')}</div>
                                     </div>
                                 </button>
                                 <div className="theme-card rounded-xl p-4 shadow-sm">

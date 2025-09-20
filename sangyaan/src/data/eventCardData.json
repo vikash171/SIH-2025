@@ -1,0 +1,523 @@
+{
+    "events": [
+        {
+            "id": "event123",
+            "title": "Science Fair 2023",
+            "description": "Showcase your innovative science projects and compete with fellow students.",
+            "fullDescription": "Join us for the annual Science Fair where students from across the region showcase their innovative projects. This is a great opportunity to learn, network, and compete for exciting prizes. Projects will be judged by industry experts and academic professionals.",
+            "type": "school",
+            "startDate": "2023-11-15",
+            "endDate": "2023-11-30",
+            "participants": 42,
+            "daysLeft": 15,
+            "teams": 3,
+            "progress": 65,
+            "rewards": "200 XP + Badge",
+            "detailedRewards": {
+                "xp": 200,
+                "badges": [
+                    "Science Explorer",
+                    "Innovation Master"
+                ],
+                "certificates": "Participation Certificate",
+                "prizes": "Top 3 winners get cash prizes"
+            },
+            "organizer": {
+                "name": "Dr. Sarah Johnson",
+                "email": "sarah.johnson@school.edu",
+                "phone": "+1-234-567-8900"
+            },
+            "location": {
+                "venue": "Main Auditorium",
+                "address": "123 School Street, City, State 12345",
+                "isOnline": false
+            },
+            "requirements": [
+                "Must be enrolled in current academic year",
+                "Project proposal submission required",
+                "Team size: 2-4 members"
+            ],
+            "schedule": [
+                {
+                    "time": "09:00 AM",
+                    "activity": "Registration & Setup"
+                },
+                {
+                    "time": "10:00 AM",
+                    "activity": "Project Presentations Begin"
+                },
+                {
+                    "time": "02:00 PM",
+                    "activity": "Judging & Evaluation"
+                },
+                {
+                    "time": "04:00 PM",
+                    "activity": "Awards Ceremony"
+                }
+            ],
+            "tags": [
+                "Science",
+                "Innovation",
+                "Competition",
+                "STEM"
+            ],
+            "registrationDeadline": "2023-11-10",
+            "isJoined": false,
+            "maxParticipants": 100,
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": "event124",
+            "title": "Global Coding Challenge",
+            "description": "Join programmers worldwide in this exciting coding competition with real-world problems.",
+            "fullDescription": "A 48-hour global coding challenge where participants solve real-world problems using any programming language. Teams collaborate virtually and compete for prizes while learning from industry mentors.",
+            "type": "open",
+            "startDate": "2023-12-01",
+            "endDate": "2023-12-03",
+            "participants": 156,
+            "daysLeft": 25,
+            "teams": 12,
+            "progress": 30,
+            "rewards": "500 XP + Certificate",
+            "detailedRewards": {
+                "xp": 500,
+                "badges": [
+                    "Code Warrior",
+                    "Global Challenger"
+                ],
+                "certificates": "Completion Certificate",
+                "prizes": "Winner gets internship opportunity"
+            },
+            "organizer": {
+                "name": "Tech Academy Global",
+                "email": "events@techacademy.com"
+            },
+            "location": {
+                "venue": "Online Event",
+                "isOnline": true
+            },
+            "requirements": [
+                "Basic programming knowledge required",
+                "Own laptop/computer needed",
+                "Stable internet connection"
+            ],
+            "schedule": [
+                {
+                    "time": "12:00 PM",
+                    "activity": "Opening Ceremony"
+                },
+                {
+                    "time": "01:00 PM",
+                    "activity": "Challenge Begins"
+                },
+                {
+                    "time": "01:00 PM +48h",
+                    "activity": "Submission Deadline"
+                },
+                {
+                    "time": "03:00 PM +48h",
+                    "activity": "Results & Awards"
+                }
+            ],
+            "tags": [
+                "Programming",
+                "Global",
+                "Competition",
+                "Technology"
+            ],
+            "registrationDeadline": "2023-11-25",
+            "isJoined": true,
+            "maxParticipants": 500,
+            "difficulty": "Advanced"
+        },
+        {
+            "id": "event125",
+            "title": "Math Olympiad Team Battle",
+            "description": "Form teams and compete in challenging mathematical problems across different categories.",
+            "fullDescription": "An intensive mathematics competition where teams of 4 students tackle complex problems in algebra, geometry, calculus, and discrete mathematics. Perfect for students who love mathematical challenges.",
+            "type": "team",
+            "startDate": "2023-11-20",
+            "endDate": "2023-11-22",
+            "participants": 88,
+            "daysLeft": 8,
+            "teams": 22,
+            "progress": 85,
+            "rewards": "300 XP + Trophy",
+            "detailedRewards": {
+                "xp": 300,
+                "badges": [
+                    "Math Master",
+                    "Team Player"
+                ],
+                "certificates": "Excellence Certificate",
+                "prizes": "Winning team gets scholarship"
+            },
+            "organizer": {
+                "name": "Mathematics Department",
+                "email": "math@university.edu"
+            },
+            "location": {
+                "venue": "University Hall",
+                "address": "456 University Ave, Academic City",
+                "isOnline": false
+            },
+            "requirements": [
+                "Team of exactly 4 members",
+                "High school or college level",
+                "Calculator allowed"
+            ],
+            "schedule": [
+                {
+                    "time": "08:00 AM",
+                    "activity": "Team Registration"
+                },
+                {
+                    "time": "09:00 AM",
+                    "activity": "Round 1: Algebra"
+                },
+                {
+                    "time": "11:00 AM",
+                    "activity": "Round 2: Geometry"
+                },
+                {
+                    "time": "02:00 PM",
+                    "activity": "Final Round"
+                }
+            ],
+            "tags": [
+                "Mathematics",
+                "Team",
+                "Olympiad",
+                "Academic"
+            ],
+            "registrationDeadline": "2023-11-18",
+            "isJoined": false,
+            "maxParticipants": 120,
+            "difficulty": "Advanced"
+        },
+        {
+            "id": "event126",
+            "title": "Chemistry Lab Workshop",
+            "description": "Hands-on chemistry experiments and lab techniques for aspiring chemists.",
+            "fullDescription": "A comprehensive workshop covering essential chemistry lab techniques, safety protocols, and exciting experiments. Students will work with professional equipment and learn from experienced chemists.",
+            "type": "school",
+            "startDate": "2023-11-25",
+            "endDate": "2023-11-26",
+            "participants": 24,
+            "daysLeft": 12,
+            "teams": 6,
+            "progress": 45,
+            "rewards": "150 XP + Lab Certificate",
+            "detailedRewards": {
+                "xp": 150,
+                "badges": [
+                    "Lab Expert",
+                    "Safety First"
+                ],
+                "certificates": "Lab Proficiency Certificate"
+            },
+            "organizer": {
+                "name": "Prof. Michael Chen",
+                "email": "m.chen@chemistry.edu"
+            },
+            "location": {
+                "venue": "Chemistry Lab Building",
+                "address": "789 Science Park, Research District",
+                "isOnline": false
+            },
+            "requirements": [
+                "Safety goggles required",
+                "Lab coat provided",
+                "No prior experience needed"
+            ],
+            "schedule": [
+                {
+                    "time": "10:00 AM",
+                    "activity": "Safety Briefing"
+                },
+                {
+                    "time": "10:30 AM",
+                    "activity": "Basic Techniques"
+                },
+                {
+                    "time": "02:00 PM",
+                    "activity": "Advanced Experiments"
+                },
+                {
+                    "time": "04:00 PM",
+                    "activity": "Results Discussion"
+                }
+            ],
+            "tags": [
+                "Chemistry",
+                "Laboratory",
+                "Hands-on",
+                "Science"
+            ],
+            "registrationDeadline": "2023-11-22",
+            "isJoined": true,
+            "maxParticipants": 30,
+            "difficulty": "Beginner"
+        },
+        {
+            "id": "event127",
+            "title": "AI & Machine Learning Summit",
+            "description": "Explore the latest trends in artificial intelligence and machine learning with industry experts.",
+            "fullDescription": "A two-day summit featuring keynote speakers from top tech companies, hands-on workshops, and networking opportunities. Learn about cutting-edge AI applications and future career paths.",
+            "type": "open",
+            "startDate": "2023-12-10",
+            "endDate": "2023-12-11",
+            "participants": 234,
+            "daysLeft": 35,
+            "teams": 0,
+            "progress": 20,
+            "rewards": "400 XP + Industry Certificate",
+            "detailedRewards": {
+                "xp": 400,
+                "badges": [
+                    "AI Pioneer",
+                    "Future Tech"
+                ],
+                "certificates": "Industry Recognition Certificate",
+                "prizes": "Networking opportunities with tech leaders"
+            },
+            "organizer": {
+                "name": "AI Innovation Hub",
+                "email": "summit@aiinnovation.org"
+            },
+            "location": {
+                "venue": "Convention Center",
+                "address": "321 Tech Boulevard, Innovation District",
+                "isOnline": false
+            },
+            "requirements": [
+                "Interest in AI/ML field",
+                "Laptop recommended for workshops",
+                "All skill levels welcome"
+            ],
+            "schedule": [
+                {
+                    "time": "09:00 AM",
+                    "activity": "Keynote: Future of AI"
+                },
+                {
+                    "time": "11:00 AM",
+                    "activity": "Workshop: ML Basics"
+                },
+                {
+                    "time": "02:00 PM",
+                    "activity": "Panel: Industry Insights"
+                },
+                {
+                    "time": "04:00 PM",
+                    "activity": "Networking Session"
+                }
+            ],
+            "tags": [
+                "AI",
+                "Machine Learning",
+                "Technology",
+                "Career"
+            ],
+            "registrationDeadline": "2023-12-05",
+            "isJoined": false,
+            "maxParticipants": 300,
+            "difficulty": "All Levels"
+        },
+        {
+            "id": "event128",
+            "title": "Robotics Team Championship",
+            "description": "Build and program robots to compete in various challenges and obstacle courses.",
+            "fullDescription": "Teams design, build, and program autonomous robots to navigate obstacle courses and complete specific tasks. This championship tests both engineering skills and programming abilities.",
+            "type": "team",
+            "startDate": "2023-12-15",
+            "endDate": "2023-12-17",
+            "participants": 72,
+            "daysLeft": 40,
+            "teams": 18,
+            "progress": 15,
+            "rewards": "600 XP + Championship Trophy",
+            "detailedRewards": {
+                "xp": 600,
+                "badges": [
+                    "Robot Builder",
+                    "Programming Pro",
+                    "Team Champion"
+                ],
+                "certificates": "Robotics Excellence Certificate",
+                "prizes": "Winning team gets robotics kit worth $2000"
+            },
+            "organizer": {
+                "name": "Robotics Society",
+                "email": "championship@robotics.org"
+            },
+            "location": {
+                "venue": "Engineering Complex",
+                "address": "555 Innovation Way, Tech Campus",
+                "isOnline": false
+            },
+            "requirements": [
+                "Team of 3-5 members",
+                "Basic programming knowledge",
+                "Robot kit will be provided"
+            ],
+            "schedule": [
+                {
+                    "time": "08:00 AM",
+                    "activity": "Team Check-in & Kit Distribution"
+                },
+                {
+                    "time": "09:00 AM",
+                    "activity": "Design & Build Phase"
+                },
+                {
+                    "time": "02:00 PM",
+                    "activity": "Programming & Testing"
+                },
+                {
+                    "time": "04:00 PM",
+                    "activity": "Competition Rounds"
+                }
+            ],
+            "tags": [
+                "Robotics",
+                "Programming",
+                "Engineering",
+                "Competition"
+            ],
+            "registrationDeadline": "2023-12-10",
+            "isJoined": false,
+            "maxParticipants": 100,
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": "event129",
+            "title": "Environmental Science Field Trip",
+            "description": "Explore local ecosystems and learn about environmental conservation through hands-on fieldwork.",
+            "fullDescription": "A comprehensive field study program where students explore various ecosystems, collect data, and learn about biodiversity conservation. Includes water quality testing, soil analysis, and wildlife observation.",
+            "type": "school",
+            "startDate": "2023-11-28",
+            "endDate": "2023-11-29",
+            "participants": 36,
+            "daysLeft": 18,
+            "teams": 9,
+            "progress": 55,
+            "rewards": "180 XP + Field Certificate",
+            "detailedRewards": {
+                "xp": 180,
+                "badges": [
+                    "Eco Warrior",
+                    "Field Researcher"
+                ],
+                "certificates": "Environmental Studies Certificate"
+            },
+            "organizer": {
+                "name": "Dr. Emily Green",
+                "email": "e.green@enviro.edu"
+            },
+            "location": {
+                "venue": "Nature Reserve Park",
+                "address": "Green Valley Nature Reserve, Eco District",
+                "isOnline": false
+            },
+            "requirements": [
+                "Comfortable hiking shoes required",
+                "Weather-appropriate clothing",
+                "Notebook and pen for observations"
+            ],
+            "schedule": [
+                {
+                    "time": "07:00 AM",
+                    "activity": "Departure from School"
+                },
+                {
+                    "time": "09:00 AM",
+                    "activity": "Ecosystem Survey"
+                },
+                {
+                    "time": "01:00 PM",
+                    "activity": "Data Collection & Analysis"
+                },
+                {
+                    "time": "04:00 PM",
+                    "activity": "Return Journey"
+                }
+            ],
+            "tags": [
+                "Environment",
+                "Field Study",
+                "Conservation",
+                "Biology"
+            ],
+            "registrationDeadline": "2023-11-24",
+            "isJoined": false,
+            "maxParticipants": 40,
+            "difficulty": "Beginner"
+        },
+        {
+            "id": "event130",
+            "title": "Physics Innovation Challenge",
+            "description": "Design and build innovative solutions to real-world physics problems using creative engineering.",
+            "fullDescription": "Students work in teams to identify physics problems in everyday life and create innovative solutions using principles of mechanics, thermodynamics, and electromagnetism. Projects are judged on creativity, scientific accuracy, and practical application.",
+            "type": "open",
+            "startDate": "2023-12-05",
+            "endDate": "2023-12-07",
+            "participants": 64,
+            "daysLeft": 30,
+            "teams": 16,
+            "progress": 25,
+            "rewards": "350 XP + Innovation Award",
+            "detailedRewards": {
+                "xp": 350,
+                "badges": [
+                    "Physics Pioneer",
+                    "Innovation Expert"
+                ],
+                "certificates": "Innovation Excellence Certificate",
+                "prizes": "Best project gets 3D printer"
+            },
+            "organizer": {
+                "name": "Physics Innovation Lab",
+                "email": "innovation@physicslab.org"
+            },
+            "location": {
+                "venue": "Innovation Center",
+                "address": "777 Discovery Lane, Science Hub",
+                "isOnline": false
+            },
+            "requirements": [
+                "Team of 2-4 members",
+                "Basic physics knowledge",
+                "Materials will be provided"
+            ],
+            "schedule": [
+                {
+                    "time": "09:00 AM",
+                    "activity": "Problem Identification"
+                },
+                {
+                    "time": "11:00 AM",
+                    "activity": "Design & Prototyping"
+                },
+                {
+                    "time": "03:00 PM",
+                    "activity": "Testing & Refinement"
+                },
+                {
+                    "time": "05:00 PM",
+                    "activity": "Presentation & Judging"
+                }
+            ],
+            "tags": [
+                "Physics",
+                "Innovation",
+                "Engineering",
+                "Problem Solving"
+            ],
+            "registrationDeadline": "2023-12-01",
+            "isJoined": true,
+            "maxParticipants": 80,
+            "difficulty": "Intermediate"
+        }
+    ]
+}

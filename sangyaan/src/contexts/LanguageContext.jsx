@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /**
  * Language Context
  * 
@@ -30,6 +31,7 @@ const translations = {
         labs: "Labs",
         ranks: "Ranks",
         class: "Class",
+        events: "Events",
 
         // Common
         backToDashboard: "Back to Dashboard",
@@ -110,6 +112,7 @@ const translations = {
         labs: "लैब्स",
         ranks: "रैंक",
         class: "क्लास",
+        events: "इवेंट्स",
 
         // Common
         backToDashboard: "डैशबोर्ड पर वापस",
@@ -190,6 +193,7 @@ const translations = {
         labs: "ଲ୍ୟାବ୍ସ",
         ranks: "ର୍ୟାଙ୍କ",
         class: "କ୍ଲାସ",
+        events: "ଇଭେଣ୍ଟସ୍",
 
         // Common
         backToDashboard: "ଡ୍ୟାସବୋର୍ଡକୁ ଫେରନ୍ତୁ",

@@ -14,10 +14,11 @@
 
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const Profile = ({
-    userName = "Alex Johnson",
-    userLevel = "Level 12 Explorer",
+    userName,
+    userLevel,
     userXP = 2450,
     userStreak = 7,
     showNotification = true
@@ -25,6 +26,12 @@ const Profile = ({
     const [showProfile, setShowProfile] = useState(false);
     const [currentTheme, setCurrentTheme] = useState('playful');
     const { currentLanguage, changeLanguage, t, availableLanguages } = useLanguage();
+    const { user, logout } = useAuth();
+
+    // Use authenticated user data if available
+    const displayName = userName || user?.name || "User";
+    const displayLevel = userLevel || `${user?.type === 'staff' ? 'Teacher' : 'Student'} Level 12`;
+    const displayAvatar = user?.avatar || "👤";
 
     useEffect(() => {
         // Set initial theme
@@ -43,8 +50,9 @@ const Profile = ({
     // Language change is now handled by the context
 
     const handleLogout = () => {
-        alert('Logging out...');
-        // Handle logout logic here
+        if (window.confirm('Are you sure you want to logout?')) {
+            logout();
+        }
     };
 
     const handleSettings = () => {
@@ -75,7 +83,7 @@ const Profile = ({
                 onClick={toggleProfile}
                 className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all theme-accent relative"
             >
-                <span className="text-white font-bold text-lg">A</span>
+                <span className="text-2xl">{displayAvatar}</span>
                 {/* Notification dot */}
                 {showNotification && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -90,10 +98,15 @@ const Profile = ({
                     {/* Profile Header */}
                     <div className="text-center mb-6">
                         <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 theme-accent">
-                            <span className="text-white font-bold text-2xl">A</span>
+                            <span className="text-2xl">{displayAvatar}</span>
                         </div>
-                        <h3 className="text-xl font-bold theme-text">{userName}</h3>
-                        <p className="text-sm opacity-70">{userLevel}</p>
+                        <h3 className="text-xl font-bold theme-text">{displayName}</h3>
+                        <p className="text-sm opacity-70">{displayLevel}</p>
+                        {user?.loginMethod && (
+                            <p className="text-xs opacity-50 mt-1">
+                                via {user.loginMethod === 'school' ? 'School ID' : user.loginMethod}
+                            </p>
+                        )}
                     </div>
 
                     {/* User Stats */}
