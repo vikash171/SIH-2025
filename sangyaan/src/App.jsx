@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { AuthProvider } from './contexts/AuthContext';
 import Homepage from './components/Homepage';
 import Classroom from './components/Classroom';
 import Learn from './components/Learn';
 import VirtualLab from './components/VirtualLab';
 import Leaderboard from './components/Leaderboard';
+import Events from './components/Events';
 
 const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('homepage');
@@ -26,6 +28,8 @@ const AppContent = () => {
         return <VirtualLab onNavigate={navigate} />;
       case 'leaderboard':
         return <Leaderboard onNavigate={navigate} />;
+      case 'events':
+        return <Events onNavigate={navigate} />;
       default:
         return <Homepage onNavigate={navigate} />;
     }
@@ -80,8 +84,17 @@ const AppContent = () => {
               className={`flex flex-col items-center p-2 rounded-lg transition ${currentPage === 'classroom' ? 'theme-primary text-white' : 'text-gray-600 hover:text-gray-800'
                 }`}
             >
-              <span className="text-xl mb-1">🎓</span>
+              <span className="text-xl mb-1">�</span>
               <span className="text-xs font-medium">{t('class')}</span>
+            </button>
+
+            <button
+              onClick={() => navigate('events')}
+              className={`flex flex-col items-center p-2 rounded-lg transition ${currentPage === 'events' ? 'theme-primary text-white' : 'text-gray-600 hover:text-gray-800'
+                }`}
+            >
+              <span className="text-xl mb-1">📅</span>
+              <span className="text-xs font-medium">{t('events')}</span>
             </button>
           </div>
         </div>
@@ -95,9 +108,11 @@ const AppContent = () => {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AppContent />
-    </LanguageProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 
