@@ -1,0 +1,508 @@
+/* Adventure Container */
+.adventure-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Header */
+.adventure-header {
+    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    color: white;
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.adventure-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.adventure-header p {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Main Content */
+.adventure-main {
+    padding: 3rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Subjects Grid */
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+}
+
+/* Subject Card */
+.subject-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(33, 202, 255, 0.08);
+    padding: 2rem 1.5rem 1.5rem;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.subject-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(33, 202, 255, 0.18);
+}
+
+.subject-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: bounce 2s infinite alternate;
+}
+
+@keyframes bounce {
+    to {
+        transform: translateY(-8px);
+    }
+}
+
+.icon-emoji {
+    font-size: 4rem;
+}
+
+.subject-title {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.subject-description {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.5;
+}
+
+/* Progress Info */
+.progress-info {
+    margin: 1.5rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar.large {
+    height: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Subject Stats */
+.subject-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.stat {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px) scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #374151;
+}
+
+/* Modal Header */
+.modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modal-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Modal Body */
+.modal-body {
+    text-align: left;
+}
+
+.modal-description {
+    font-size: 1.1rem;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Topics Preview */
+.topics-preview {
+    margin-bottom: 2rem;
+}
+
+.topics-preview h3 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+
+.topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.topic-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.topic-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.topic-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.topic-levels {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.difficulty-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.difficulty-badge.beginner {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.difficulty-badge.intermediate {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.difficulty-badge.advanced {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.difficulty-badge.expert {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+/* Current Progress */
+.current-progress {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.current-progress h4 {
+    margin: 0 0 1rem 0;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.progress-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.progress-percentage {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1.1rem;
+}
+
+.progress-details {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.resume-btn,
+.start-btn,
+.start-new-btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.resume-btn,
+.start-btn {
+    transform: scale(1);
+}
+
+.resume-btn:hover,
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.start-new-btn {
+    background: #6b7280;
+    color: white;
+}
+
+.start-new-btn:hover {
+    background: #374151;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .adventure-header {
+        padding: 2rem 1rem 1.5rem;
+    }
+
+    .adventure-header h1 {
+        font-size: 2rem;
+    }
+
+    .adventure-header p {
+        font-size: 1rem;
+    }
+
+    .adventure-main {
+        padding: 2rem 1rem;
+    }
+
+    .subjects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .subject-card {
+        max-width: none;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .resume-btn,
+    .start-btn,
+    .start-new-btn {
+        width: 100%;
+    }
+
+    .topic-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .topic-info {
+        width: 100%;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    .subject-card,
+    .modal-overlay,
+    .modal-content,
+    .resume-btn,
+    .start-btn {
+        transition: none;
+    }
+
+    .subject-icon {
+        animation: none;
+    }
+
+    @keyframes bounce,
+    @keyframes fadeIn,
+    @keyframes slideUp {
+
+        from,
+        to {
+            transform: none;
+            opacity: 1;
+        }
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .subject-card {
+        border: 2px solid #000;
+    }
+
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.8);
+    }
+}

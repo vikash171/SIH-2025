@@ -1,242 +1,324 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import EventCard from './EventCard';
+import eventData from '../data/eventCardData.json';
+import './Events.css';
 
 const Events = () => {
-  const [activeTab, setActiveTab] = useState('all');
-  const [events, setEvents] = useState([
-    {
-      id: '1',
-      title: 'Science Fair 2023',
-      description: 'Showcase your innovative science projects and compete with fellow students. Top projects get featured in the school magazine!',
-      type: 'school',
-      startDate: '2023-11-15',
-      endDate: '2023-11-30',
-      participants: 42,
-      daysLeft: 15,
-      teams: 3,
-      progress: 65,
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [expandedCardId, setExpandedCardId] = useState(null);
+  const expandedCardRef = useRef(null);
 
-      rewards: '200 XP + Badge',
-      isJoined: false
-    },
-    {
-      id: '2',
-      title: 'National Coding Challenge',
-      description: 'Test your coding skills in this nationwide competition. Solve algorithmic challenges and climb the leaderboard!',
-      type: 'open',
-      startDate: '2023-12-01',
-      endDate: '2023-12-15',
-      participants: 1250,
-      daysLeft: 30,
-      teams: 125,
-      progress: 30,
-      rewards: '500 XP + Certificate',
-      isJoined: true
-    },
-    {
-      id: '3',
-      title: 'Robotics Team Challenge',
-      description: 'Form a team and build a robot to complete specific tasks. Battle against other teams in this exciting challenge!',
-      type: 'team',
-      startDate: '2023-11-20',
-      endDate: '2023-12-10',
-      participants: 86,
-      daysLeft: 20,
-      teams: 12,
-      progress: 45,
-      rewards: '350 XP + Trophy',
-      isJoined: false
+  // Load events from JSON data
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        setLoading(true);
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setEvents(eventData.events);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load events. Please try again.');
+        console.error('Error loading events:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
+
+  // Handle outside click to close expanded card
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (expandedCardRef.current && !expandedCardRef.current.contains(event.target)) {
+        setExpandedCardId(null);
+      }
+    };
+
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        setExpandedCardId(null);
+      }
+    };
+
+    if (expandedCardId) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'hidden'; // Prevent body scroll
     }
-  ]);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [expandedCardId]);
+
+  const handleCardClick = (eventId) => {
+    setExpandedCardId(eventId);
+  };
+
+  const handleCloseExpanded = () => {
+    setExpandedCardId(null);
+  };
 
   const handleJoinEvent = (eventId) => {
-    setEvents(events.map(event => 
-      event.id === eventId ? { ...event, isJoined: true } : event
-    ));
-    // Show success notification
-    console.log(`Joined event ${eventId}`);
+    setEvents(prevEvents =>
+      prevEvents.map(event =>
+        event.id === eventId
+          ? { ...event, isJoined: !event.isJoined }
+          : event
+      )
+    );
   };
 
-  const handleViewDetails = (eventId) => {
-    // Navigate to event details page
-    console.log(`Viewing details for event ${eventId}`);
+  const getEventTypeIcon = (type) => {
+    switch (type) {
+      case 'school': return '🏫';
+      case 'open': return '🌍';
+      case 'team': return '👥';
+      default: return '📅';
+    }
   };
 
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
+  const getEventTypeColor = (type) => {
+    switch (type) {
+      case 'school': return '#4F46E5';
+      case 'open': return '#10B981';
+      case 'team': return '#F59E0B';
+      default: return '#6B7280';
+    }
   };
 
-  // Filter events based on active tab
-  const filteredEvents = events.filter(event => {
-    if (activeTab === 'all') return true;
-    return event.type === activeTab;
-  });
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
-  return (
-    <div className="max-w-6xl mx-auto px-5 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-indigo-600 mb-3">STEM Events Hub</h1>
-        <p className="text-gray-600 max-w-3xl mx-auto">
-          Discover exciting STEM events, challenges, and competitions. Join events from your school or open to all participants!
-        </p>
-      </div>
-
-      <div className="flex justify-center mb-8 gap-3 flex-wrap">
-        <div 
-          className={`flex items-center gap-2 px-5 py-2 rounded-full font-medium cursor-pointer transition-all duration-200 ${
-            activeTab === 'all' 
-              ? 'bg-indigo-600 text-white shadow-lg transform scale-105' 
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200'
-          }`}
-          onClick={() => handleTabChange('all')}
-        >
-          <i className="fas fa-globe"></i>
-          <span>All Events</span>
+  if (loading) {
+    return (
+      <div className="events-container">
+        <div className="events-header">
+          <h1>STEM Events</h1>
+          <p>Discover and join exciting STEM events, competitions, and workshops</p>
         </div>
-        <div 
-          className={`flex items-center gap-2 px-5 py-2 rounded-full font-medium cursor-pointer transition-all duration-200 ${
-            activeTab === 'school' 
-              ? 'bg-indigo-600 text-white shadow-lg transform scale-105' 
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200'
-          }`}
-          onClick={() => handleTabChange('school')}
-        >
-          <i className="fas fa-school"></i>
-          <span>My School</span>
-        </div>
-        <div 
-          className={`flex items-center gap-2 px-5 py-2 rounded-full font-medium cursor-pointer transition-all duration-200 ${
-            activeTab === 'open' 
-              ? 'bg-indigo-600 text-white shadow-lg transform scale-105' 
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200'
-          }`}
-          onClick={() => handleTabChange('open')}
-        >
-          <i className="fas fa-users"></i>
-          <span>Open to All</span>
-        </div>
-        <div 
-          className={`flex items-center gap-2 px-5 py-2 rounded-full font-medium cursor-pointer transition-all duration-200 ${
-            activeTab === 'team' 
-              ? 'bg-indigo-600 text-white shadow-lg transform scale-105' 
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200'
-          }`}
-          onClick={() => handleTabChange('team')}
-        >
-          <i className="fas fa-trophy"></i>
-          <span>Team Battles</span>
-        </div>
-      </div>
-      
-      {filteredEvents.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {filteredEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              onJoinEvent={handleJoinEvent}
-              onViewDetails={handleViewDetails}
-            />
+        <div className="events-grid">
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="event-card skeleton">
+              <div className="skeleton-header"></div>
+              <div className="skeleton-body"></div>
+              <div className="skeleton-footer"></div>
+            </div>
           ))}
         </div>
-      ) : (
-        <div className="text-center py-12 mb-10">
-          <div className="text-6xl mb-4">📅</div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">No events found</h3>
-          <p className="text-gray-500">
-            There are no events available for the selected category. Try switching to a different tab!
-          </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="events-container">
+        <div className="events-error">
+          <div className="error-icon">⚠️</div>
+          <h3>Failed to load events</h3>
+          <p>{error}</p>
+          <button
+            className="retry-button"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!events.length) {
+    return (
+      <div className="events-container">
+        <div className="events-empty">
+          <div className="empty-icon">📅</div>
+          <h3>No events available</h3>
+          <p>Check back later for exciting STEM events!</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="events-container">
+      <div className="events-header">
+        <h1>STEM Events</h1>
+        <p>Discover and join exciting STEM events, competitions, and workshops</p>
+      </div>
+
+      <div className="events-grid">
+        {events.map((event) => (
+          <EventCard
+            key={event.id}
+            event={event}
+            onCardClick={handleCardClick}
+            isExpanded={expandedCardId === event.id}
+          />
+        ))}
+      </div>
+
+      {/* Expanded Card Overlay */}
+      {expandedCardId && (
+        <div className="expanded-overlay">
+          <div
+            className="expanded-card"
+            ref={expandedCardRef}
+          >
+            <button
+              className="close-button"
+              onClick={handleCloseExpanded}
+              aria-label="Close expanded view"
+            >
+              ✕
+            </button>
+
+            {(() => {
+              const event = events.find(e => e.id === expandedCardId);
+              if (!event) return null;
+
+              return (
+                <div className="expanded-content">
+                  <div className="expanded-header">
+                    <div
+                      className="expanded-type-badge"
+                      style={{ backgroundColor: getEventTypeColor(event.type) }}
+                    >
+                      <span className="event-icon">{getEventTypeIcon(event.type)}</span>
+                      <span className="event-type">{event.type}</span>
+                    </div>
+                    <h2 className="expanded-title">{event.title}</h2>
+                    <div className="expanded-date">
+                      📅 {formatDate(event.startDate)} - {formatDate(event.endDate)}
+                    </div>
+                  </div>
+
+                  <div className="expanded-body">
+                    <section className="description-section">
+                      <h3>About This Event</h3>
+                      <p>{event.fullDescription || event.description}</p>
+                    </section>
+
+                    <section className="details-section">
+                      <div className="detail-grid">
+                        <div className="detail-item">
+                          <h4>📍 Location</h4>
+                          <p>{event.location?.venue || 'TBA'}</p>
+                          {event.location?.address && (
+                            <p className="address">{event.location.address}</p>
+                          )}
+                        </div>
+
+                        <div className="detail-item">
+                          <h4>👨‍🏫 Organizer</h4>
+                          <p>{event.organizer?.name || 'TBA'}</p>
+                          {event.organizer?.email && (
+                            <p className="contact">{event.organizer.email}</p>
+                          )}
+                        </div>
+
+                        <div className="detail-item">
+                          <h4>📊 Progress</h4>
+                          <div className="expanded-progress">
+                            <div className="progress-bar">
+                              <div
+                                className="progress-fill"
+                                style={{ width: `${event.progress}%` }}
+                              ></div>
+                            </div>
+                            <span>{event.progress}% complete</span>
+                          </div>
+                        </div>
+
+                        <div className="detail-item">
+                          <h4>🏆 Rewards</h4>
+                          <p>{event.rewards}</p>
+                          {event.detailedRewards?.badges && (
+                            <div className="badges">
+                              {event.detailedRewards.badges.map((badge, index) => (
+                                <span key={index} className="badge">{badge}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </section>
+
+                    {event.requirements && (
+                      <section className="requirements-section">
+                        <h3>📋 Requirements</h3>
+                        <ul>
+                          {event.requirements.map((req, index) => (
+                            <li key={index}>{req}</li>
+                          ))}
+                        </ul>
+                      </section>
+                    )}
+
+                    {event.schedule && (
+                      <section className="schedule-section">
+                        <h3>⏰ Schedule</h3>
+                        <div className="schedule-list">
+                          {event.schedule.map((item, index) => (
+                            <div key={index} className="schedule-item">
+                              <span className="schedule-time">{item.time}</span>
+                              <span className="schedule-activity">{item.activity}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+
+                    {event.tags && (
+                      <section className="tags-section">
+                        <h3>🏷️ Tags</h3>
+                        <div className="tags">
+                          {event.tags.map((tag, index) => (
+                            <span key={index} className="tag">{tag}</span>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                  </div>
+
+                  <div className="expanded-footer">
+                    <div className="expanded-stats">
+                      <div className="stat">
+                        <span className="stat-icon">👥</span>
+                        <span>{event.participants}/{event.maxParticipants || '∞'} participants</span>
+                      </div>
+                      <div className="stat">
+                        <span className="stat-icon">⏰</span>
+                        <span>{event.daysLeft} days left</span>
+                      </div>
+                      <div className="stat">
+                        <span className="stat-icon">📈</span>
+                        <span>{event.difficulty || 'All levels'}</span>
+                      </div>
+                    </div>
+                    <button
+                      className={`expanded-action-button ${event.isJoined ? 'joined' : 'join'}`}
+                      onClick={() => handleJoinEvent(event.id)}
+                    >
+                      {event.isJoined ? 'Leave Event' : 'Join Event'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       )}
-
-      {/* My Active Projects Section */}
-      <div className="bg-white rounded-xl p-6 shadow-md mb-8">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-3">
-          <i className="fas fa-project-diagram text-indigo-600"></i>
-          <span>My Active Projects</span>
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 flex items-center gap-4 hover:bg-gray-100 transition-colors">
-            <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
-              <i className="fas fa-rocket text-lg"></i>
-            </div>
-            <div className="flex-grow">
-              <div className="font-semibold text-gray-800">Solar System Model</div>
-              <div className="text-sm text-gray-500">Due in 5 days</div>
-            </div>
-            <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              75%
-            </div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 flex items-center gap-4 hover:bg-gray-100 transition-colors">
-            <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
-              <i className="fas fa-flask text-lg"></i>
-            </div>
-            <div className="flex-grow">
-              <div className="font-semibold text-gray-800">Chemical Reactions Lab</div>
-              <div className="text-sm text-gray-500">Due in 12 days</div>
-            </div>
-            <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              40%
-            </div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 flex items-center gap-4 hover:bg-gray-100 transition-colors">
-            <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
-              <i className="fas fa-calculator text-lg"></i>
-            </div>
-            <div className="flex-grow">
-              <div className="font-semibold text-gray-800">Math Puzzles Collection</div>
-              <div className="text-sm text-gray-500">Due in 20 days</div>
-            </div>
-            <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              25%
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Team Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* My Teams */}
-        <div className="bg-white rounded-xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center gap-3">
-            <i className="fas fa-users-cog text-indigo-600"></i>
-            <span>My Teams</span>
-          </h2>
-          <p className="text-gray-600 mb-4">You're part of 2 active teams working on STEM projects</p>
-          <div className="flex items-center mb-6">
-            <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-2 relative z-30">
-              RJ
-            </div>
-            <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm -ml-2 relative z-20">
-              AK
-            </div>
-            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white font-semibold text-sm -ml-2 relative z-10">
-              SP
-            </div>
-            <div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center text-white font-semibold text-sm -ml-2">
-              +3
-            </div>
-          </div>
-          <button className="w-full px-4 py-2 border-2 border-indigo-600 text-indigo-600 rounded-full font-medium hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2">
-            <i className="fas fa-user-friends"></i>
-            <span>View All Teams</span>
-          </button>
-        </div>
-
-        {/* Join a Team */}
-        <div className="bg-white rounded-xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center gap-3">
-            <i className="fas fa-user-plus text-indigo-600"></i>
-            <span>Join a Team</span>
-          </h2>
-          <p className="text-gray-600 mb-6">Looking for team members for your project? Or want to join an existing team?</p>
-          <button className="w-full px-4 py-2 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
-            <i className="fas fa-search"></i>
-            <span>Browse Teams</span>
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

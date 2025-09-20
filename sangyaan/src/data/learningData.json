@@ -1,0 +1,300 @@
+{
+    "subjects": [
+        {
+            "id": "physics",
+            "name": "Physics",
+            "description": "Explore the laws of nature and unlock achievements!",
+            "icon": "⚛️",
+            "color": "#2196F3",
+            "badge": "New!",
+            "topics": [
+                {
+                    "id": "mechanics",
+                    "name": "Mechanics",
+                    "description": "Motion, forces, and energy",
+                    "icon": "🏃‍♂️",
+                    "totalLevels": 15,
+                    "difficulty": "Beginner"
+                },
+                {
+                    "id": "thermodynamics",
+                    "name": "Thermodynamics",
+                    "description": "Heat, temperature, and energy transfer",
+                    "icon": "🌡️",
+                    "totalLevels": 12,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "electromagnetism",
+                    "name": "Electromagnetism",
+                    "description": "Electric and magnetic fields",
+                    "icon": "⚡",
+                    "totalLevels": 18,
+                    "difficulty": "Advanced"
+                },
+                {
+                    "id": "optics",
+                    "name": "Optics",
+                    "description": "Light, reflection, and refraction",
+                    "icon": "🔍",
+                    "totalLevels": 10,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "quantum",
+                    "name": "Quantum Physics",
+                    "description": "Atomic and subatomic phenomena",
+                    "icon": "🔬",
+                    "totalLevels": 20,
+                    "difficulty": "Expert"
+                }
+            ]
+        },
+        {
+            "id": "chemistry",
+            "name": "Chemistry",
+            "description": "Mix elements, solve puzzles, and earn rewards!",
+            "icon": "🧪",
+            "color": "#FF9800",
+            "badge": "Hot!",
+            "topics": [
+                {
+                    "id": "atomic-structure",
+                    "name": "Atomic Structure",
+                    "description": "Atoms, electrons, and periodic table",
+                    "icon": "⚛️",
+                    "totalLevels": 14,
+                    "difficulty": "Beginner"
+                },
+                {
+                    "id": "chemical-bonding",
+                    "name": "Chemical Bonding",
+                    "description": "How atoms connect and form molecules",
+                    "icon": "🔗",
+                    "totalLevels": 16,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "organic-chemistry",
+                    "name": "Organic Chemistry",
+                    "description": "Carbon compounds and reactions",
+                    "icon": "🧬",
+                    "totalLevels": 22,
+                    "difficulty": "Advanced"
+                },
+                {
+                    "id": "acids-bases",
+                    "name": "Acids & Bases",
+                    "description": "pH, neutralization, and titrations",
+                    "icon": "🧪",
+                    "totalLevels": 12,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "thermochemistry",
+                    "name": "Thermochemistry",
+                    "description": "Energy changes in chemical reactions",
+                    "icon": "🔥",
+                    "totalLevels": 10,
+                    "difficulty": "Advanced"
+                }
+            ]
+        },
+        {
+            "id": "mathematics",
+            "name": "Mathematics",
+            "description": "Crack codes, solve riddles, and level up your skills!",
+            "icon": "📐",
+            "color": "#9C27B0",
+            "badge": "Fun!",
+            "topics": [
+                {
+                    "id": "algebra",
+                    "name": "Algebra",
+                    "description": "Variables, equations, and functions",
+                    "icon": "🔢",
+                    "totalLevels": 20,
+                    "difficulty": "Beginner"
+                },
+                {
+                    "id": "geometry",
+                    "name": "Geometry",
+                    "description": "Shapes, angles, and spatial reasoning",
+                    "icon": "📐",
+                    "totalLevels": 18,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "calculus",
+                    "name": "Calculus",
+                    "description": "Derivatives, integrals, and limits",
+                    "icon": "∫",
+                    "totalLevels": 25,
+                    "difficulty": "Advanced"
+                },
+                {
+                    "id": "statistics",
+                    "name": "Statistics",
+                    "description": "Data analysis and probability",
+                    "icon": "📊",
+                    "totalLevels": 15,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "trigonometry",
+                    "name": "Trigonometry",
+                    "description": "Sine, cosine, and triangle relationships",
+                    "icon": "📏",
+                    "totalLevels": 12,
+                    "difficulty": "Intermediate"
+                }
+            ]
+        },
+        {
+            "id": "biology",
+            "name": "Biology",
+            "description": "Discover life sciences and biological processes!",
+            "icon": "🧬",
+            "color": "#4CAF50",
+            "badge": "Popular!",
+            "topics": [
+                {
+                    "id": "cell-biology",
+                    "name": "Cell Biology",
+                    "description": "Structure and function of cells",
+                    "icon": "🔬",
+                    "totalLevels": 16,
+                    "difficulty": "Beginner"
+                },
+                {
+                    "id": "genetics",
+                    "name": "Genetics",
+                    "description": "DNA, heredity, and genetic engineering",
+                    "icon": "🧬",
+                    "totalLevels": 18,
+                    "difficulty": "Advanced"
+                },
+                {
+                    "id": "ecology",
+                    "name": "Ecology",
+                    "description": "Ecosystems and environmental interactions",
+                    "icon": "🌱",
+                    "totalLevels": 14,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "human-anatomy",
+                    "name": "Human Anatomy",
+                    "description": "Body systems and physiology",
+                    "icon": "🫀",
+                    "totalLevels": 20,
+                    "difficulty": "Intermediate"
+                },
+                {
+                    "id": "evolution",
+                    "name": "Evolution",
+                    "description": "Natural selection and species development",
+                    "icon": "🐒",
+                    "totalLevels": 12,
+                    "difficulty": "Advanced"
+                }
+            ]
+        }
+    ],
+    "userProgress": {
+        "physics": {
+            "mechanics": {
+                "currentLevel": 5,
+                "completedLevels": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "totalXP": 450,
+                "lastAccessed": "2023-11-20"
+            },
+            "thermodynamics": {
+                "currentLevel": 1,
+                "completedLevels": [],
+                "totalXP": 0,
+                "lastAccessed": null
+            }
+        },
+        "chemistry": {
+            "atomic-structure": {
+                "currentLevel": 8,
+                "completedLevels": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "totalXP": 720,
+                "lastAccessed": "2023-11-19"
+            }
+        },
+        "mathematics": {
+            "algebra": {
+                "currentLevel": 12,
+                "completedLevels": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "totalXP": 1150,
+                "lastAccessed": "2023-11-21"
+            },
+            "geometry": {
+                "currentLevel": 3,
+                "completedLevels": [
+                    1,
+                    2
+                ],
+                "totalXP": 200,
+                "lastAccessed": "2023-11-18"
+            }
+        }
+    },
+    "achievements": [
+        {
+            "id": "first-steps",
+            "name": "First Steps",
+            "description": "Complete your first level",
+            "icon": "👶",
+            "unlocked": true
+        },
+        {
+            "id": "physics-explorer",
+            "name": "Physics Explorer",
+            "description": "Complete 10 physics levels",
+            "icon": "🚀",
+            "unlocked": true
+        },
+        {
+            "id": "math-wizard",
+            "name": "Math Wizard",
+            "description": "Complete 15 math levels",
+            "icon": "🧙‍♂️",
+            "unlocked": true
+        },
+        {
+            "id": "chemistry-master",
+            "name": "Chemistry Master",
+            "description": "Complete 10 chemistry levels",
+            "icon": "⚗️",
+            "unlocked": false
+        }
+    ]
+}
