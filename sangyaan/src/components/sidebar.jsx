@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './TeacherSidebar.css';
 
 const TeacherSidebar = ({ activeTab, onTabChange, isCollapsed, onToggle }) => {
@@ -38,6 +39,8 @@ const TeacherSidebar = ({ activeTab, onTabChange, isCollapsed, onToggle }) => {
                 : [...prev, groupId]
         );
     };
+
+    const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
 
     return (
         <div className={`teacher-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -101,6 +104,23 @@ const TeacherSidebar = ({ activeTab, onTabChange, isCollapsed, onToggle }) => {
             </nav>
 
             <div className="sidebar-footer">
+                {!isCollapsed && (
+                    <div className="language-switcher" style={{ marginBottom: '12px' }}>
+                        <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>Language</div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                                onClick={() => changeLanguage('en')}
+                                className={`px-2 py-1 rounded ${currentLanguage === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                                title={availableLanguages?.en?.name}
+                            >EN</button>
+                            <button
+                                onClick={() => changeLanguage('hi')}
+                                className={`px-2 py-1 rounded ${currentLanguage === 'hi' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                                title={availableLanguages?.hi?.name}
+                            >हिं</button>
+                        </div>
+                    </div>
+                )}
                 <div className="user-info">
                     <div className="user-avatar">👨‍🏫</div>
                     {!isCollapsed && (

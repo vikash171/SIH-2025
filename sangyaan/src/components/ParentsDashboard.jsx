@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import studentDataJson from '../data/student_data.json';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ParentsDashboard = () => {
     const [childData, setChildData] = useState(null);
     const [activeTab, setActiveTab] = useState('overview');
     const [isLoading, setIsLoading] = useState(true);
+    const { t, currentLanguage, changeLanguage } = useLanguage();
 
     // Load child data from JSON
     useEffect(() => {
@@ -58,7 +60,7 @@ const ParentsDashboard = () => {
                 achievements: studentDataJson.achievements.badges.slice(0, 3).map(badge => ({
                     name: badge.name,
                     icon: badge.icon,
-                    date: new Date(badge.earnedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    date: new Date(badge.earnedDate).toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : 'en-US', { month: 'short', day: 'numeric' })
                 })),
                 
                 weeklyActivity: Object.entries(studentDataJson.activityHistory.weeklyActivity).map(([day, data]) => ({
@@ -70,7 +72,7 @@ const ParentsDashboard = () => {
             setChildData(processedData);
             setIsLoading(false);
         }, 1000);
-    }, []);
+    }, [currentLanguage]);
 
     // Helper function to convert numeric score to letter grade
     const getLetterGrade = (score) => {
@@ -91,9 +93,9 @@ const ParentsDashboard = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-blue-50 flex items-center justify-center">
-                <div className="text-center">
+                    <div className="text-center">
                     <div className="text-4xl mb-4">📚</div>
-                    <div className="text-xl text-gray-600">Loading your child's progress...</div>
+                    <div className="text-xl text-gray-600">{t('loading') || 'Loading...'}</div>
                 </div>
             </div>
         );
@@ -111,11 +113,21 @@ const ParentsDashboard = () => {
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-gray-900">{childData.name}</h1>
-                                <p className="text-lg text-gray-600">{childData.grade} • Level {childData.currentLevel}</p>
+                                <p className="text-lg text-gray-600">{childData.grade} • {t('parent.currentLevel')} {childData.currentLevel}</p>
                             </div>
                         </div>
                         <div className="text-right">
-                            <div className="text-sm text-gray-500">Last Active</div>
+                            <div className="flex items-center justify-end space-x-2 mb-2">
+                                <button
+                                    onClick={() => changeLanguage('en')}
+                                    className={`px-2 py-1 rounded text-xs ${currentLanguage === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                                >EN</button>
+                                <button
+                                    onClick={() => changeLanguage('hi')}
+                                    className={`px-2 py-1 rounded text-xs ${currentLanguage === 'hi' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+                                >हिं</button>
+                            </div>
+                            <div className="text-sm text-gray-500">{t('parent.headerLastActive')}</div>
                             <div className="text-lg font-semibold text-green-600">{childData.lastActive}</div>
                         </div>
                     </div>
@@ -127,11 +139,11 @@ const ParentsDashboard = () => {
                 <div className="bg-white rounded-lg shadow-sm p-2">
                     <div className="flex space-x-2">
                         {[
-                            { id: 'overview', name: 'Overview', icon: '📊' },
-                            { id: 'subjects', name: 'Subjects', icon: '📚' },
-                            { id: 'achievements', name: 'Achievements', icon: '🏆' },
-                            { id: 'activity', name: 'Study Time', icon: '⏰' },
-                            { id: 'ranking', name: 'Class Rank', icon: '🎯' }
+                            { id: 'overview', name: t('parent.tabsOverview'), icon: '📊' },
+                            { id: 'subjects', name: t('parent.tabsSubjects'), icon: '📚' },
+                            { id: 'achievements', name: t('parent.tabsAchievements'), icon: '🏆' },
+                            { id: 'activity', name: t('parent.tabsStudyTime'), icon: '⏰' },
+                            { id: 'ranking', name: t('parent.tabsClassRank'), icon: '🎯' }
                         ].map((tab) => (
                             <button
                                 key={tab.id}
@@ -157,35 +169,35 @@ const ParentsDashboard = () => {
                     <div className="space-y-6">
                         {/* Progress Summary */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 Overall Progress</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 {t('parent.overallProgress')}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="text-center">
                                     <div className="w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
                                         <div className="text-3xl font-bold text-green-600">{childData.overallProgress}%</div>
                                     </div>
-                                    <div className="text-lg font-semibold text-gray-900">Overall Progress</div>
-                                    <div className="text-gray-600">Excellent work!</div>
+                                    <div className="text-lg font-semibold text-gray-900">{t('parent.overallProgress')}</div>
+                                    <div className="text-gray-600">{t('excellentWork') || 'Excellent work!'}</div>
                                 </div>
                                 <div className="text-center">
                                     <div className="w-24 h-24 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-3">
-                                        <div className="text-2xl font-bold text-blue-600">Level {childData.currentLevel}</div>
+                                        <div className="text-2xl font-bold text-blue-600">{t('parent.currentLevel')} {childData.currentLevel}</div>
                                     </div>
-                                    <div className="text-lg font-semibold text-gray-900">Current Level</div>
-                                    <div className="text-gray-600">Keep it up!</div>
+                                    <div className="text-lg font-semibold text-gray-900">{t('parent.currentLevel')}</div>
+                                    <div className="text-gray-600">{t('keepItUp') || 'Keep it up!'}</div>
                                 </div>
                                 <div className="text-center">
                                     <div className="w-24 h-24 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-3">
                                         <div className="text-lg font-bold text-purple-600">{childData.weeklyStudyTime}</div>
                                     </div>
-                                    <div className="text-lg font-semibold text-gray-900">This Week</div>
-                                    <div className="text-gray-600">Study time</div>
+                                    <div className="text-lg font-semibold text-gray-900">{t('parent.thisWeek')}</div>
+                                    <div className="text-gray-600">{t('parent.studyTime')}</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Recent Performance */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📝 Recent Test Scores</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📝 {t('parent.recentTestScores')}</h2>
                             <div className="flex justify-center">
                                 <div className="flex space-x-4">
                                     {childData.recentScores.map((score, index) => (
@@ -207,14 +219,14 @@ const ParentsDashboard = () => {
                 {/* Subjects Tab */}
                 {activeTab === 'subjects' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">📚 Subject Performance</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">📚 {t('parent.subjectPerformance')}</h2>
                         <div className="space-y-4">
                             {childData.subjects.map((subject, index) => (
                                 <div key={index} className="border border-gray-200 rounded-lg p-4">
                                     <div className="flex items-center justify-between mb-3">
                                         <div>
                                             <h3 className="text-xl font-semibold text-gray-900">{subject.name}</h3>
-                                            <p className="text-gray-600">Teacher: {subject.teacher}</p>
+                                            <p className="text-gray-600">{t('parent.teacherLabel')}: {subject.teacher}</p>
                                         </div>
                                         <div className="text-right">
                                             <div className={`text-2xl font-bold ${
@@ -235,7 +247,7 @@ const ParentsDashboard = () => {
                                         ></div>
                                     </div>
                                     <div className="text-right text-lg font-semibold text-gray-700 mt-2">
-                                        {subject.progress}% Complete
+                                        {subject.progress}% {t('parent.completeWord')}
                                     </div>
                                 </div>
                             ))}
@@ -246,20 +258,20 @@ const ParentsDashboard = () => {
                 {/* Achievements Tab */}
                 {activeTab === 'achievements' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">🏆 Recent Achievements</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">🏆 {t('parent.recentAchievements')}</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {childData.achievements.map((achievement, index) => (
                                 <div key={index} className="text-center border border-gray-200 rounded-lg p-6">
                                     <div className="text-5xl mb-3">{achievement.icon}</div>
                                     <h3 className="text-xl font-semibold text-gray-900 mb-2">{achievement.name}</h3>
-                                    <p className="text-gray-600">Earned on {achievement.date}</p>
+                                    <p className="text-gray-600">{t('parent.earnedOn', { date: achievement.date })}</p>
                                 </div>
                             ))}
                         </div>
                         <div className="mt-8 text-center">
                             <div className="inline-block bg-blue-100 rounded-lg p-4">
                                 <div className="text-lg font-semibold text-blue-900">
-                                    🎉 Your child has earned {childData.achievements.length} achievements this month!
+                                    🎉 {t('parent.earnedCount', { count: childData.achievements.length })}
                                 </div>
                             </div>
                         </div>
@@ -269,7 +281,7 @@ const ParentsDashboard = () => {
                 {/* Activity Tab */}
                 {activeTab === 'activity' && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">⏰ Weekly Study Time</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">⏰ {t('parent.weeklyStudyTime')}</h2>
                         <div className="space-y-4">
                             {childData.weeklyActivity.map((day, index) => (
                                 <div key={index} className="flex items-center space-x-4">
@@ -288,9 +300,9 @@ const ParentsDashboard = () => {
                         <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
                             <div className="text-center">
                                 <div className="text-lg font-semibold text-green-800">
-                                    ✅ Total this week: {childData.weeklyActivity.reduce((sum, day) => sum + day.minutes, 0)} minutes
+                                    ✅ {t('parent.totalThisWeek', { minutes: childData.weeklyActivity.reduce((sum, day) => sum + day.minutes, 0) })}
                                 </div>
-                                <div className="text-green-600 mt-1">Great consistency in studying!</div>
+                                <div className="text-green-600 mt-1">{t('parent.consistencyMsg')}</div>
                             </div>
                         </div>
                     </div>
@@ -301,33 +313,33 @@ const ParentsDashboard = () => {
                     <div className="space-y-6">
                         {/* Overall Class Position */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">🎯 Your Child's Class Position</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">🎯 {t('parent.classPositionTitle')}</h2>
                             <div className="text-center">
                                 <div className="inline-block bg-blue-100 rounded-full p-8 mb-4">
                                     <div className="text-4xl font-bold text-blue-600">3rd</div>
                                 </div>
                                 <div className="text-xl font-semibold text-gray-900 mb-2">
-                                    Rank 3 out of 35 students
+                                    {t('parent.rankOutOf', { rank: 3, total: 35 })}
                                 </div>
-                                <div className="text-gray-600">Top 9% of the class! 🌟</div>
+                                <div className="text-gray-600">{t('parent.topPercent', { percent: 9 })} 🌟</div>
                             </div>
                         </div>
 
                         {/* Subject Rankings */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📊 Subject-wise Rankings</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📊 {t('parent.subjectWiseRankings')}</h2>
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                                     <div className="flex items-center space-x-3">
                                         <div className="text-2xl">🥇</div>
                                         <div>
                                             <div className="font-bold text-gray-900">Mathematics</div>
-                                            <div className="text-sm text-gray-600">Your child is doing excellent!</div>
+                                            <div className="text-sm text-gray-600">{t('parent.doingExcellent')}</div>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <div className="text-xl font-bold text-yellow-600">1st</div>
-                                        <div className="text-sm text-gray-600">out of 35</div>
+                                        <div className="text-sm text-gray-600">{t('parent.outOfTotal', { total: 35 })}</div>
                                     </div>
                                 </div>
 
@@ -336,12 +348,12 @@ const ParentsDashboard = () => {
                                         <div className="text-2xl">🥈</div>
                                         <div>
                                             <div className="font-bold text-gray-900">Physics</div>
-                                            <div className="text-sm text-gray-600">Very good performance</div>
+                                            <div className="text-sm text-gray-600">{t('parent.veryGoodPerformance')}</div>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <div className="text-xl font-bold text-gray-600">5th</div>
-                                        <div className="text-sm text-gray-600">out of 28</div>
+                                        <div className="text-sm text-gray-600">{t('parent.outOfTotal', { total: 28 })}</div>
                                     </div>
                                 </div>
 
@@ -350,12 +362,12 @@ const ParentsDashboard = () => {
                                         <div className="text-2xl">🥉</div>
                                         <div>
                                             <div className="font-bold text-gray-900">Chemistry</div>
-                                            <div className="text-sm text-gray-600">Good progress, keep going!</div>
+                                            <div className="text-sm text-gray-600">{t('parent.goodProgress')}</div>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <div className="text-xl font-bold text-orange-600">8th</div>
-                                        <div className="text-sm text-gray-600">out of 22</div>
+                                        <div className="text-sm text-gray-600">{t('parent.outOfTotal', { total: 22 })}</div>
                                     </div>
                                 </div>
 
@@ -364,12 +376,12 @@ const ParentsDashboard = () => {
                                         <div className="text-2xl">📈</div>
                                         <div>
                                             <div className="font-bold text-gray-900">Biology</div>
-                                            <div className="text-sm text-gray-600">Room for improvement</div>
+                                            <div className="text-sm text-gray-600">{t('parent.roomForImprovement')}</div>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <div className="text-xl font-bold text-blue-600">12th</div>
-                                        <div className="text-sm text-gray-600">out of 30</div>
+                                        <div className="text-sm text-gray-600">{t('parent.outOfTotal', { total: 30 })}</div>
                                     </div>
                                 </div>
                             </div>
@@ -377,17 +389,17 @@ const ParentsDashboard = () => {
 
                         {/* Progress Trends */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 Progress Trends</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 {t('parent.progressTrends')}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="text-center p-4 bg-green-50 rounded-lg">
                                     <div className="text-3xl mb-2">⬆️</div>
-                                    <div className="text-xl font-bold text-green-600">+2 Positions</div>
-                                    <div className="text-gray-600">This Month</div>
+                                    <div className="text-xl font-bold text-green-600">{t('parent.plusPositions', { count: 2 })}</div>
+                                    <div className="text-gray-600">{t('parent.thisMonth')}</div>
                                 </div>
                                 <div className="text-center p-4 bg-purple-50 rounded-lg">
                                     <div className="text-3xl mb-2">🎯</div>
-                                    <div className="text-xl font-bold text-purple-600">Consistent</div>
-                                    <div className="text-gray-600">Study Pattern</div>
+                                    <div className="text-xl font-bold text-purple-600">{t('parent.consistent')}</div>
+                                    <div className="text-gray-600">{t('parent.studyPattern')}</div>
                                 </div>
                             </div>
                         </div>
@@ -397,11 +409,10 @@ const ParentsDashboard = () => {
                             <div className="text-center">
                                 <div className="text-4xl mb-4">🌟</div>
                                 <div className="text-xl font-bold text-gray-900 mb-2">
-                                    Your child is performing excellently!
+                                    {t('parent.encouragementTitle')}
                                 </div>
                                 <div className="text-gray-600">
-                                    Emma is in the top 10% of her class and showing consistent improvement. 
-                                    Keep encouraging this wonderful progress!
+                                    {t('parent.encouragementBody', { name: childData.name.split(' ')[0] })}
                                 </div>
                             </div>
                         </div>
@@ -413,9 +424,9 @@ const ParentsDashboard = () => {
             <div className="fixed bottom-6 right-6">
                 <div className="bg-white rounded-lg shadow-lg p-4">
                     <div className="text-center">
-                        <div className="text-sm text-gray-600 mb-2">Need Help?</div>
+                        <div className="text-sm text-gray-600 mb-2">{t('parent.needHelp')}</div>
                         <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold">
-                            📞 Contact Teacher
+                            📞 {t('parent.contactTeacher')}
                         </button>
                     </div>
                 </div>

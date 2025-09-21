@@ -25,6 +25,10 @@ export const useLanguage = () => {
 // Translation data
 const translations = {
     en: {
+        // Generic
+        loading: "Loading...",
+        excellentWork: "Excellent work!",
+        keepItUp: "Keep it up!",
         // Navigation
         home: "Home",
         learn: "Learn",
@@ -102,10 +106,92 @@ const translations = {
         waveMotion: "Wave Motion",
         waveInterference: "Wave Interference",
         standingWaves: "Standing Waves",
-        waveApplications: "Wave Applications"
+        waveApplications: "Wave Applications",
+
+        // Teacher Dashboard
+        teacher: {
+            headerTitle: "Teacher Dashboard",
+            totalStudents: "Total Students",
+            avgProgress: "Average Progress",
+            avgWeeklyStudy: "Avg. Weekly Study",
+            needAttention: "Need Attention",
+            classPerformance: "Class Performance Overview",
+            classAverage: "Class Average",
+            highestScore: "Highest Score",
+            activeToday: "Active Today",
+            highPerformers: "High Performers",
+            recentActivity: "Recent Student Activity",
+            progress: "Progress",
+            level: "Level",
+            studentsNeedingAttention: "Students Needing Attention",
+            contact: "Contact",
+            topPerformers: "Top Performers",
+            gems: "gems",
+            excellent: "Excellent (90%+)",
+            good: "Good (70-89%)",
+            improving: "Improving (50-69%)",
+            studentManagement: "Student Management",
+            searchStudents: "Search students...",
+            student: "Student",
+            gemsLabel: "Gems",
+            lastActive: "Last Active",
+            status: "Status",
+            actions: "Actions",
+            view: "View",
+            message: "Message",
+            classesManagement: "Class Management",
+            createNewClass: "Create New Class",
+            edit: "Edit"
+        },
+
+        // Parents Dashboard
+        parent: {
+            headerLastActive: "Last Active",
+            tabsOverview: "Overview",
+            tabsSubjects: "Subjects",
+            tabsAchievements: "Achievements",
+            tabsStudyTime: "Study Time",
+            tabsClassRank: "Class Rank",
+            overallProgress: "Overall Progress",
+            currentLevel: "Current Level",
+            thisWeek: "This Week",
+            studyTime: "Study time",
+            recentTestScores: "Recent Test Scores",
+            subjectPerformance: "Subject Performance",
+            teacherLabel: "Teacher",
+            completeWord: "Complete",
+            recentAchievements: "Recent Achievements",
+            earnedOn: "Earned on {date}",
+            earnedCount: "Your child has earned {count} achievements this month!",
+            weeklyStudyTime: "Weekly Study Time",
+            totalThisWeek: "Total this week: {minutes} minutes",
+            consistencyMsg: "Great consistency in studying!",
+            classPositionTitle: "Your Child's Class Position",
+            rankOutOf: "Rank {rank} out of {total} students",
+            topPercent: "Top {percent}% of the class!",
+            subjectWiseRankings: "Subject-wise Rankings",
+            doingExcellent: "Your child is doing excellent!",
+            veryGoodPerformance: "Very good performance",
+            goodProgress: "Good progress, keep going!",
+            roomForImprovement: "Room for improvement",
+            progressTrends: "Progress Trends",
+            plusPositions: "+{count} Positions",
+            thisMonth: "This Month",
+            consistent: "Consistent",
+            studyPattern: "Study Pattern",
+            encouragementTitle: "Your child is performing excellently!",
+            encouragementBody: "{name} is in the top 10% of the class and showing consistent improvement. Keep encouraging this wonderful progress!",
+            needHelp: "Need Help?",
+            contactTeacher: "Contact Teacher",
+            outOfTotal: "out of {total}"
+        }
     },
 
     hi: {
+        // Generic
+        loading: "लोड हो रहा है...",
+        excellentWork: "शानदार काम!",
+        keepItUp: "इसे जारी रखें!",
         // Navigation
         home: "होम",
         learn: "सीखें",
@@ -183,7 +269,85 @@ const translations = {
         waveMotion: "तरंग गति",
         waveInterference: "तरंग हस्तक्षेप",
         standingWaves: "स्थिर तरंगें",
-        waveApplications: "तरंग अनुप्रयोग"
+        waveApplications: "तरंग अनुप्रयोग",
+
+        // Teacher Dashboard
+        teacher: {
+            headerTitle: "टीचर डैशबोर्ड",
+            totalStudents: "कुल छात्र",
+            avgProgress: "औसत प्रगति",
+            avgWeeklyStudy: "औसत साप्ताहिक अध्ययन",
+            needAttention: "ध्यान की आवश्यकता",
+            classPerformance: "कक्षा प्रदर्शन अवलोकन",
+            classAverage: "कक्षा औसत",
+            highestScore: "सर्वोच्च स्कोर",
+            activeToday: "आज सक्रिय",
+            highPerformers: "उच्च प्रदर्शनकर्ता",
+            recentActivity: "हालिया छात्र गतिविधि",
+            progress: "प्रगति",
+            level: "स्तर",
+            studentsNeedingAttention: "ध्यान की आवश्यकता वाले छात्र",
+            contact: "संपर्क करें",
+            topPerformers: "शीर्ष प्रदर्शनकर्ता",
+            gems: "रत्न",
+            excellent: "उत्कृष्ट (90%+)",
+            good: "अच्छा (70-89%)",
+            improving: "सुधार कर रहे (50-69%)",
+            studentManagement: "छात्र प्रबंधन",
+            searchStudents: "छात्र खोजें...",
+            student: "छात्र",
+            gemsLabel: "रत्न",
+            lastActive: "अंतिम गतिविधि",
+            status: "स्थिति",
+            actions: "क्रियाएँ",
+            view: "देखें",
+            message: "संदेश",
+            classesManagement: "कक्षा प्रबंधन",
+            createNewClass: "नई कक्षा बनाएं",
+            edit: "संपादित करें"
+        },
+
+        // Parents Dashboard
+        parent: {
+            headerLastActive: "अंतिम गतिविधि",
+            tabsOverview: "सारांश",
+            tabsSubjects: "विषय",
+            tabsAchievements: "उपलब्धियां",
+            tabsStudyTime: "अध्ययन समय",
+            tabsClassRank: "कक्षा रैंक",
+            overallProgress: "कुल प्रगति",
+            currentLevel: "वर्तमान स्तर",
+            thisWeek: "इस सप्ताह",
+            studyTime: "अध्ययन समय",
+            recentTestScores: "हालिया टेस्ट स्कोर",
+            subjectPerformance: "विषय प्रदर्शन",
+            teacherLabel: "शिक्षक",
+            completeWord: "पूर्ण",
+            recentAchievements: "हालिया उपलब्धियां",
+            earnedOn: "प्राप्त किया {date}",
+            earnedCount: "आपके बच्चे ने इस महीने {count} उपलब्धियां अर्जित की हैं!",
+            weeklyStudyTime: "साप्ताहिक अध्ययन समय",
+            totalThisWeek: "इस सप्ताह कुल: {minutes} मिनट",
+            consistencyMsg: "पढ़ाई में शानदार निरंतरता!",
+            classPositionTitle: "आपके बच्चे की कक्षा में स्थिति",
+            rankOutOf: "रैंक {rank} कुल {total} छात्रों में",
+            topPercent: "कक्षा के शीर्ष {percent}% में!",
+            subjectWiseRankings: "विषयवार रैंकिंग",
+            doingExcellent: "आपका बच्चा शानदार कर रहा है!",
+            veryGoodPerformance: "बहुत अच्छा प्रदर्शन",
+            goodProgress: "अच्छी प्रगति, जारी रखें!",
+            roomForImprovement: "सुधार की गुंजाइश",
+            progressTrends: "प्रगति रुझान",
+            plusPositions: "+{count} स्थान",
+            thisMonth: "इस महीने",
+            consistent: "निरंतर",
+            studyPattern: "अध्ययन पैटर्न",
+            encouragementTitle: "आपका बच्चा उत्कृष्ट प्रदर्शन कर रहा है!",
+            encouragementBody: "{name} कक्षा के शीर्ष 10% में है और निरंतर सुधार दिखा रहा/रही है। इस शानदार प्रगति को प्रोत्साहित करते रहें!",
+            needHelp: "मदद चाहिए?",
+            contactTeacher: "शिक्षक से संपर्क करें",
+            outOfTotal: "कुल {total} में"
+        }
     },
 
     or: {
@@ -291,7 +455,26 @@ export const LanguageProvider = ({ children }) => {
     };
 
     const t = (key, params = {}) => {
-        const translation = translations[currentLanguage]?.[key] || translations.en[key] || key;
+        // Helper to resolve nested keys like 'parent.headerLastActive'
+        const resolve = (obj, path) => {
+            try {
+                return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
+            } catch {
+                return undefined;
+            }
+        };
+
+        let translation = resolve(translations[currentLanguage], key);
+        if (translation === undefined) {
+            translation = resolve(translations.en, key);
+        }
+        if (translation === undefined) {
+            translation = key; // fallback to key
+        }
+
+        if (typeof translation !== 'string') {
+            return translation;
+        }
 
         // Replace parameters in translation (e.g., {current}, {total})
         return translation.replace(/\{(\w+)\}/g, (match, param) => {

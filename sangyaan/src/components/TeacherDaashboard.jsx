@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { studentDb } from '../db.js';
 import TeacherSidebar from './sidebar.jsx';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const TeacherDashboard = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -15,17 +16,21 @@ const TeacherDashboard = () => {
         needAttention: 0
     });
     const [isLoading, setIsLoading] = useState(true);
+    const { t } = useLanguage();
 
     // Initialize data from IndexedDB
     useEffect(() => {
         const initializeData = async () => {
             try {
+                // Ensure mock data exists for prototype
+                await studentDb.initializeMockData();
+
                 // Load students data
-                const students = await studentDb.getStudents();
+                const students = await studentDb.getAllStudents();
                 setStudentsData(students);
 
                 // Calculate stats
-                const stats = await studentDb.calculateStats();
+                const stats = await studentDb.getStudentStats();
                 setStatsData(stats);
                 
                 setIsLoading(false);
@@ -55,10 +60,10 @@ const TeacherDashboard = () => {
 
     // Calculate class analytics
     const classAnalytics = {
-        averageScore: Math.round(studentsData.reduce((sum, student) => sum + student.progress, 0) / studentsData.length || 0),
-        topScore: Math.max(...studentsData.map(s => s.progress), 0),
+        averageScore: Math.round((studentsData.reduce((sum, student) => sum + (student.progress || 0), 0) / (studentsData.length || 1)) || 0),
+        topScore: studentsData.length ? Math.max(...studentsData.map(s => s.progress || 0)) : 0,
         activeToday: studentsData.filter(s => s.lastActive === 'Today').length,
-        weeklyGrowth: studentsData.filter(s => s.progress > 70).length
+        weeklyGrowth: studentsData.filter(s => (s.progress || 0) > 70).length
     };
 
     if (isLoading) {
@@ -85,8 +90,8 @@ const TeacherDashboard = () => {
                 <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
                     <div className="flex justify-between items-center">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">Teacher Dashboard</h1>
-                            <p className="text-gray-600 mt-1">Welcome back, Dr. Smith</p>
+                            <h1 className="text-2xl font-bold text-gray-900">{t('teacher.headerTitle')}</h1>
+                            <p className="text-gray-600 mt-1">Dr. Smith</p>
                         </div>
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-2">
@@ -113,7 +118,7 @@ const TeacherDashboard = () => {
                                         </div>
                                         <div className="ml-4">
                                             <h3 className="text-2xl font-bold text-gray-900">{statsData.totalStudents}</h3>
-                                            <p className="text-gray-600 text-sm">Total Students</p>
+                                            <p className="text-gray-600 text-sm">{t('teacher.totalStudents')}</p>
                                             <p className="text-green-600 text-xs mt-1">+2 this week</p>
                                         </div>
                                     </div>
@@ -126,7 +131,7 @@ const TeacherDashboard = () => {
                                         </div>
                                         <div className="ml-4">
                                             <h3 className="text-2xl font-bold text-gray-900">{statsData.averageProgress}%</h3>
-                                            <p className="text-gray-600 text-sm">Average Progress</p>
+                                            <p className="text-gray-600 text-sm">{t('teacher.avgProgress')}</p>
                                             <p className="text-green-600 text-xs mt-1">+5% from last week</p>
                                         </div>
                                     </div>
@@ -139,7 +144,7 @@ const TeacherDashboard = () => {
                                         </div>
                                         <div className="ml-4">
                                             <h3 className="text-2xl font-bold text-gray-900">{statsData.averageStudyTime}h</h3>
-                                            <p className="text-gray-600 text-sm">Avg. Weekly Study</p>
+                                            <p className="text-gray-600 text-sm">{t('teacher.avgWeeklyStudy')}</p>
                                             <p className="text-green-600 text-xs mt-1">+0.5h from last week</p>
                                         </div>
                                     </div>
@@ -152,7 +157,7 @@ const TeacherDashboard = () => {
                                         </div>
                                         <div className="ml-4">
                                             <h3 className="text-2xl font-bold text-gray-900">{statsData.needAttention}</h3>
-                                            <p className="text-gray-600 text-sm">Need Attention</p>
+                                            <p className="text-gray-600 text-sm">{t('teacher.needAttention')}</p>
                                             <p className="text-green-600 text-xs mt-1">-2 from last week</p>
                                         </div>
                                     </div>
@@ -162,7 +167,7 @@ const TeacherDashboard = () => {
                             {/* Chart Section */}
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-xl font-bold text-gray-900">Class Performance Overview</h2>
+                                    <h2 className="text-xl font-bold text-gray-900">{t('teacher.classPerformance')}</h2>
                                     <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm">
                                         <option>Last 7 days</option>
                                         <option>Last 30 days</option>
@@ -172,19 +177,19 @@ const TeacherDashboard = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                                     <div className="text-center p-4 bg-blue-50 rounded-lg">
                                         <div className="text-2xl font-bold text-blue-600">{classAnalytics.averageScore}%</div>
-                                        <div className="text-sm text-gray-600">Class Average</div>
+                                        <div className="text-sm text-gray-600">{t('teacher.classAverage')}</div>
                                     </div>
                                     <div className="text-center p-4 bg-green-50 rounded-lg">
                                         <div className="text-2xl font-bold text-green-600">{classAnalytics.topScore}%</div>
-                                        <div className="text-sm text-gray-600">Highest Score</div>
+                                        <div className="text-sm text-gray-600">{t('teacher.highestScore')}</div>
                                     </div>
                                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                                         <div className="text-2xl font-bold text-purple-600">{classAnalytics.activeToday}</div>
-                                        <div className="text-sm text-gray-600">Active Today</div>
+                                        <div className="text-sm text-gray-600">{t('teacher.activeToday')}</div>
                                     </div>
                                     <div className="text-center p-4 bg-orange-50 rounded-lg">
                                         <div className="text-2xl font-bold text-orange-600">{classAnalytics.weeklyGrowth}</div>
-                                        <div className="text-sm text-gray-600">High Performers</div>
+                                        <div className="text-sm text-gray-600">{t('teacher.highPerformers')}</div>
                                     </div>
                                 </div>
                                 <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -194,7 +199,7 @@ const TeacherDashboard = () => {
 
                             {/* Recent Activity */}
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Student Activity</h2>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">{t('teacher.recentActivity')}</h2>
                                 <div className="space-y-3">
                                     {studentsData.slice(0, 5).map((student, index) => (
                                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -204,11 +209,11 @@ const TeacherDashboard = () => {
                                                 </div>
                                                 <div>
                                                     <div className="font-semibold text-gray-900">{student.name}</div>
-                                                    <div className="text-sm text-gray-600">Progress: {student.progress}%</div>
+                                                    <div className="text-sm text-gray-600">{t('teacher.progress')}: {student.progress}%</div>
                                                 </div>
                                             </div>
                                             <div className="text-right">
-                                                <div className="text-sm font-semibold text-gray-900">Level {student.level}</div>
+                                                <div className="text-sm font-semibold text-gray-900">{t('teacher.level')} {student.level}</div>
                                                 <div className="text-xs text-gray-500">{student.lastActive}</div>
                                             </div>
                                         </div>
@@ -219,7 +224,7 @@ const TeacherDashboard = () => {
                             {/* Students Needing Attention */}
                             {studentsNeedingAttention.length > 0 && (
                                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                    <h2 className="text-xl font-bold text-gray-900 mb-4">⚠️ Students Needing Attention</h2>
+                                    <h2 className="text-xl font-bold text-gray-900 mb-4">⚠️ {t('teacher.studentsNeedingAttention')}</h2>
                                     <div className="space-y-3">
                                         {studentsNeedingAttention.slice(0, 3).map((student, index) => (
                                             <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
@@ -235,7 +240,7 @@ const TeacherDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                                                    Contact
+                                                    {t('teacher.contact')}
                                                 </button>
                                             </div>
                                         ))}
@@ -249,7 +254,7 @@ const TeacherDashboard = () => {
                     {activeTab === 'leaderboard' && (
                         <div className="space-y-6">
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-900 mb-6">🏆 Top Performers</h2>
+                                <h2 className="text-xl font-bold text-gray-900 mb-6">🏆 {t('teacher.topPerformers')}</h2>
                                 <div className="space-y-4">
                                     {topPerformers.map((student, index) => (
                                         <div key={index} className={`flex items-center justify-between p-4 rounded-lg ${
@@ -279,7 +284,7 @@ const TeacherDashboard = () => {
                                             </div>
                                             <div className="text-right">
                                                 <div className="text-2xl font-bold text-gray-900">{student.progress}%</div>
-                                                <div className="text-sm text-gray-600">💎 {student.gems} gems</div>
+                                                <div className="text-sm text-gray-600">💎 {student.gems} {t('teacher.gems')}</div>
                                             </div>
                                         </div>
                                     ))}
@@ -289,7 +294,7 @@ const TeacherDashboard = () => {
                             {/* Performance Categories */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                    <h3 className="text-lg font-bold text-green-700 mb-4">🌟 Excellent (90%+)</h3>
+                                    <h3 className="text-lg font-bold text-green-700 mb-4">🌟 {t('teacher.excellent')}</h3>
                                     <div className="space-y-2">
                                         {studentsData.filter(s => s.progress >= 90).map((student, index) => (
                                             <div key={index} className="flex items-center justify-between">
@@ -301,7 +306,7 @@ const TeacherDashboard = () => {
                                 </div>
 
                                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                    <h3 className="text-lg font-bold text-blue-700 mb-4">📈 Good (70-89%)</h3>
+                                    <h3 className="text-lg font-bold text-blue-700 mb-4">📈 {t('teacher.good')}</h3>
                                     <div className="space-y-2">
                                         {studentsData.filter(s => s.progress >= 70 && s.progress < 90).map((student, index) => (
                                             <div key={index} className="flex items-center justify-between">
@@ -313,7 +318,7 @@ const TeacherDashboard = () => {
                                 </div>
 
                                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                    <h3 className="text-lg font-bold text-orange-700 mb-4">📚 Improving (50-69%)</h3>
+                                    <h3 className="text-lg font-bold text-orange-700 mb-4">📚 {t('teacher.improving')}</h3>
                                     <div className="space-y-2">
                                         {studentsData.filter(s => s.progress >= 50 && s.progress < 70).map((student, index) => (
                                             <div key={index} className="flex items-center justify-between">
@@ -333,11 +338,11 @@ const TeacherDashboard = () => {
                             <div className="bg-white rounded-xl shadow-sm border border-gray-200">
                                 <div className="p-6 border-b border-gray-200">
                                     <div className="flex justify-between items-center">
-                                        <h2 className="text-xl font-bold text-gray-900">Student Management</h2>
+                                        <h2 className="text-xl font-bold text-gray-900">{t('teacher.studentManagement')}</h2>
                                         <div className="flex space-x-3">
                                             <input
                                                 type="text"
-                                                placeholder="Search students..."
+                                                placeholder={t('teacher.searchStudents')}
                                                 value={searchTerm}
                                                 onChange={(e) => setSearchTerm(e.target.value)}
                                                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -349,13 +354,13 @@ const TeacherDashboard = () => {
                                     <table className="w-full">
                                         <thead className="bg-gray-50">
                                             <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gems</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Active</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.student')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.progress')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.level')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.gemsLabel')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.lastActive')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.status')}</th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('teacher.actions')}</th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
@@ -399,8 +404,8 @@ const TeacherDashboard = () => {
                                                         </span>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                        <button className="text-indigo-600 hover:text-indigo-900 mr-3">View</button>
-                                                        <button className="text-gray-600 hover:text-gray-900">Message</button>
+                                                        <button className="text-indigo-600 hover:text-indigo-900 mr-3">{t('teacher.view')}</button>
+                                                        <button className="text-gray-600 hover:text-gray-900">{t('teacher.message')}</button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -415,13 +420,13 @@ const TeacherDashboard = () => {
                     {activeTab === 'classes' && (
                         <div className="space-y-6">
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-900 mb-4">Class Management</h2>
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">{t('teacher.classesManagement')}</h2>
                                 
                                 {/* Add New Class Button */}
                                 <div className="mb-6">
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
                                         <span>➕</span>
-                                        <span>Create New Class</span>
+                                        <span>{t('teacher.createNewClass')}</span>
                                     </button>
                                 </div>
 
@@ -439,10 +444,10 @@ const TeacherDashboard = () => {
                                             </div>
                                             <div className="flex space-x-2">
                                                 <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 Edit
+                                                    📝 {t('teacher.edit')}
                                                 </button>
                                                 <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ View
+                                                    👁️ {t('teacher.view')}
                                                 </button>
                                             </div>
                                         </div>
@@ -460,10 +465,10 @@ const TeacherDashboard = () => {
                                             </div>
                                             <div className="flex space-x-2">
                                                 <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 Edit
+                                                    📝 {t('teacher.edit')}
                                                 </button>
                                                 <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ View
+                                                    👁️ {t('teacher.view')}
                                                 </button>
                                             </div>
                                         </div>
@@ -481,10 +486,10 @@ const TeacherDashboard = () => {
                                             </div>
                                             <div className="flex space-x-2">
                                                 <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 Edit
+                                                    📝 {t('teacher.edit')}
                                                 </button>
                                                 <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ View
+                                                    👁️ {t('teacher.view')}
                                                 </button>
                                             </div>
                                         </div>
