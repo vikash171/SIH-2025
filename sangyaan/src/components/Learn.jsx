@@ -119,7 +119,7 @@ const Learn = () => {
         setCurrentLevelData(null);
     };
 
-    const handleLevelClick = (levelNumber) => {
+    const handleLevelClick = () => {
         if (!selectedSubject || !selectedTopic || !currentLevelData) return;
 
         // Navigate to Quiz view

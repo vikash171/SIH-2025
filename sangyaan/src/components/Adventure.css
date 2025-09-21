@@ -484,15 +484,14 @@
         animation: none;
     }
 
-    @keyframes bounce,
-    @keyframes fadeIn,
+    @keyframes bounce {
+        from, to { transform: none; opacity: 1; }
+    }
+    @keyframes fadeIn {
+        from, to { transform: none; opacity: 1; }
+    }
     @keyframes slideUp {
-
-        from,
-        to {
-            transform: none;
-            opacity: 1;
-        }
+        from, to { transform: none; opacity: 1; }
     }
 }
 

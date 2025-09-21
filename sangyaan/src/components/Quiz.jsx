@@ -5,7 +5,7 @@
  * - After finishing, shows a Reward view (power-ups, achievements, leaderboard)
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const SAMPLE_SETS = {
     math_algebra_01: [
@@ -91,6 +91,16 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
     const [streak, setStreak] = useState(0);
     const [showHint, setShowHint] = useState(false);
     const [completed, setCompleted] = useState(false);
+    const [showStats, setShowStats] = useState(false);
+    const [attempts, setAttempts] = useState(0);
+    const [elapsed, setElapsed] = useState(0); // seconds for current question
+    const [timerActive, setTimerActive] = useState(true);
+
+    useEffect(() => {
+        if (!timerActive) return;
+        const id = setInterval(() => setElapsed((e) => e + 1), 1000);
+        return () => clearInterval(id);
+    }, [timerActive]);
 
     const total = questions.length;
     const progressPct = Math.round(((index + 1) / total) * 100);
@@ -101,12 +111,15 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
         if (submitted || selected == null) return;
         const isCorrect = selected === current.correct;
         setSubmitted(true);
+        setAttempts((a) => a + 1);
+        setTimerActive(false);
         if (isCorrect) {
             setScore((s) => s + 1);
             setStreak((s) => s + 1);
         } else {
             setStreak(0);
         }
+        setShowStats(true);
     };
 
     const next = () => {
@@ -115,7 +128,9 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
             setIndex((i) => i + 1);
             setSelected(null);
             setSubmitted(false);
-      
+            setAttempts(0);
+            setElapsed(0);
+            setTimerActive(true);
             setShowHint(false);
         } else {
             setCompleted(true);
@@ -130,14 +145,16 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
         setIndex((i) => i - 1);
         setSelected(null);
         setSubmitted(false);
-    
+        setAttempts(0);
+        setElapsed(0);
+        setTimerActive(true);
         setShowHint(false);
     };
 
     if (completed) {
         // Reward view (right-half widgets as a summary screen)
         return (
-            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-rose-700 to-amber-400 p-4 md:p-8">
+            <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-700 to-yellow-600 p-4 md:p-8">
                 <div className="max-w-5xl mx-auto text-white">
                     <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 md:p-8 mb-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -259,7 +276,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-rose-700 to-amber-400 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-700 to-yellow-600 p-4 md:p-8">
             <div className="max-w-5xl mx-auto">
                 {/* Header */}
                 <header className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 text-white mb-6">
@@ -300,14 +317,14 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             <span>{progressPct}%</span>
                         </div>
                         <div className="w-full bg-white/20 rounded-full h-3">
-                            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-3 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                            <div className="bg-gradient-to-r from-yellow-500 to-amber-500 h-3 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
                         </div>
                     </div>
 
                     {/* Question Area */}
                     <div className="mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">💡</div>
+                            <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">💡</div>
                             <h2 className="text-xl md:text-2xl font-semibold">Challenge</h2>
                         </div>
 
@@ -331,7 +348,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                                                             : isWrong
                                                             ? 'bg-red-500/90 border-red-400 text-white shadow-lg shadow-red-900/30'
                                                             : isSelected
-                                                            ? 'bg-white/20 border-white/40 shadow-md'
+                                                            ? 'bg-green-700/30 border-green-300 text-white shadow-md'
                                                             : 'bg-white/10 hover:bg-white/15 border-white/20 hover:border-white/40 hover:shadow-md'
                                                     } focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70`}
                                                 >
@@ -353,7 +370,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                         {/* Hint Button */}
                         <div className="mt-6 flex justify-center">
                             <button
-                                className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-full flex items-center transition-all"
+                                className="bg-amber-700 hover:bg-amber-800 text-white py-2 px-6 rounded-full flex items-center transition-all"
                                 onClick={() => setShowHint(true)}
                                 disabled={showHint}
                             >
@@ -365,12 +382,12 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
 
                     {/* Navigation Buttons */}
                                 <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-0 sm:justify-between">
-                                    <button className="bg-gray-600/90 hover:bg-gray-700 text-white py-3 px-6 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed" onClick={previous} disabled={index === 0}>
+                                    <button className="bg-gray-700/90 hover:bg-gray-800 text-white py-4 px-8 text-base md:text-lg rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed" onClick={previous} disabled={index === 0}>
                             ← Previous
                         </button>
                         {!submitted ? (
                             <button
-                                            className={`bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-full transition-all ${
+                                            className={`bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-8 text-base md:text-lg rounded-full transition-all ${
                                     selected == null ? 'opacity-50 cursor-not-allowed' : ''
                                 }`}
                                 onClick={submit}
@@ -380,7 +397,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             </button>
                         ) : (
                             <button
-                                            className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-6 rounded-full transition-all"
+                                            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-4 px-8 text-base md:text-lg rounded-full transition-all"
                                 onClick={next}
                             >
                                 {index + 1 < total ? 'Next' : 'Finish'} →
@@ -408,6 +425,41 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                     <button onClick={onBack} className="text-white/90 hover:text-white underline">← Back to Levels</button>
                 </div>
             </div>
+            {/* Per-submit Stats Popup */}
+            {showStats && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
+                        <div className="px-6 py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white flex items-center justify-between">
+                            <h3 className="text-lg font-semibold">Your Stats</h3>
+                            <button onClick={() => setShowStats(false)} className="hover:opacity-90">✖</button>
+                        </div>
+                        <div className="p-6 grid grid-cols-2 gap-4">
+                            <div className="bg-amber-50 rounded-lg p-4">
+                                <div className="text-xs text-amber-700 mb-1">Time Taken</div>
+                                <div className="text-2xl font-bold text-amber-800">{elapsed}s</div>
+                            </div>
+                            <div className="bg-emerald-50 rounded-lg p-4">
+                                <div className="text-xs text-emerald-700 mb-1">Attempts</div>
+                                <div className="text-2xl font-bold text-emerald-800">{attempts}</div>
+                            </div>
+                            <div className="col-span-2 bg-indigo-50 rounded-lg p-4">
+                                <div className="text-xs text-indigo-700 mb-1">Leaderboard Snapshot</div>
+                                <div className="text-sm text-indigo-900">You’re currently ranked top 25% for this question.</div>
+                            </div>
+                            <div className="col-span-2 bg-yellow-50 rounded-lg p-4">
+                                <div className="text-xs text-yellow-700 mb-1">Achievements & Rewards</div>
+                                <div className="text-sm text-yellow-900">⭐ +10 Star points {submitted && selected === current.correct ? '(Correct!)' : '(Try again next!)'}</div>
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 flex justify-end gap-2 border-t">
+                            <button onClick={() => setShowStats(false)} className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Close</button>
+                            {submitted && (
+                                <button onClick={() => { setShowStats(false); next(); }} className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white">Continue</button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

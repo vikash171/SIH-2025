@@ -84,7 +84,7 @@ const AppContent = () => {
               className={`flex flex-col items-center p-2 rounded-lg transition ${currentPage === 'classroom' ? 'theme-primary text-white' : 'text-gray-600 hover:text-gray-800'
                 }`}
             >
-              <span className="text-xl mb-1">�</span>
+              <span className="text-xl mb-1">🏫</span>
               <span className="text-xs font-medium">{t('class')}</span>
             </button>
 

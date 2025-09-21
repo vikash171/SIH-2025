@@ -518,6 +518,29 @@
             "isJoined": true,
             "maxParticipants": 80,
             "difficulty": "Intermediate"
+        },
+        {
+            "id": "meme001",
+            "title": "STEM Meme Challenge",
+            "description": "Create and submit your funniest STEM-themed meme!",
+            "fullDescription": "Let your creativity flow! Design a meme that explains or jokes about a STEM concept. Best memes will be featured and rewarded.",
+            "type": "open",
+            "startDate": "2023-12-12",
+            "endDate": "2023-12-20",
+            "participants": 0,
+            "daysLeft": 15,
+            "teams": 0,
+            "progress": 0,
+            "rewards": "200 XP + Feature",
+            "detailedRewards": { "xp": 200, "badges": ["Meme Master"] },
+            "organizer": { "name": "Community Team", "email": "community@sangyaan.app" },
+            "location": { "venue": "Online", "isOnline": true },
+            "requirements": ["Original content", "No offensive material", "Max 2 submissions"],
+            "tags": ["Fun", "Creativity", "STEM"],
+            "registrationDeadline": "2023-12-18",
+            "isJoined": false,
+            "maxParticipants": 1000,
+            "difficulty": "All Levels"
         }
     ]
 }

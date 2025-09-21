@@ -428,14 +428,11 @@
         animation: none;
     }
 
-    @keyframes scaleIn,
+    @keyframes scaleIn {
+        from, to { transform: none; opacity: 1; }
+    }
     @keyframes slideUp {
-
-        from,
-        to {
-            transform: none;
-            opacity: 1;
-        }
+        from, to { transform: none; opacity: 1; }
     }
 }
 

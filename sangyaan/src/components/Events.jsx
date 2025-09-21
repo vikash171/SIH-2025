@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import MemeRegistration from './MemeRegistration';
 import EventCard from './EventCard';
 import eventData from '../data/eventCardData.json';
 import './Events.css';
@@ -10,6 +11,7 @@ const Events = () => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [expandedProjectId, setExpandedProjectId] = useState(null);
   const [expandedTeamSection, setExpandedTeamSection] = useState(null);
+  const [showMemeForm, setShowMemeForm] = useState(false);
   const expandedCardRef = useRef(null);
 
   // Mock data for projects and teams
@@ -165,6 +167,13 @@ const Events = () => {
   };
 
   const handleJoinEvent = (eventId) => {
+    // If Meme event, open registration instead of toggling immediately
+    const event = events.find(e => e.id === eventId);
+    if (event && event.id === 'meme001') {
+      setShowMemeForm(true);
+      setExpandedCardId(null);
+      return;
+    }
     setEvents(prevEvents =>
       prevEvents.map(event =>
         event.id === eventId
@@ -172,6 +181,13 @@ const Events = () => {
           : event
       )
     );
+  };
+
+  const handleMemeSubmit = (payload) => {
+    console.log('Meme submitted:', payload);
+    setShowMemeForm(false);
+    // Mark event as joined
+    setEvents(prev => prev.map(e => e.id === 'meme001' ? { ...e, isJoined: true, participants: (e.participants || 0) + 1 } : e));
   };
 
   const getEventTypeIcon = (type) => {
@@ -341,7 +357,7 @@ const Events = () => {
       </div>
 
       {/* Expanded Card Overlay */}
-      {(expandedCardId || expandedProjectId || expandedTeamSection) && (
+      {(expandedCardId || expandedProjectId || expandedTeamSection || showMemeForm) && (
         <div className="expanded-overlay">
           <div
             className="expanded-card"
@@ -349,13 +365,18 @@ const Events = () => {
           >
             <button
               className="close-button"
-              onClick={handleCloseExpanded}
+              onClick={() => { setShowMemeForm(false); handleCloseExpanded(); }}
               aria-label="Close expanded view"
             >
               ✕
             </button>
 
             {(() => {
+              if (showMemeForm) {
+                return (
+                  <MemeRegistration onClose={() => setShowMemeForm(false)} onSubmit={handleMemeSubmit} />
+                );
+              }
               // Event Card Expansion
               if (expandedCardId) {
                 const event = events.find(e => e.id === expandedCardId);
