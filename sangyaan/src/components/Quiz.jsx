@@ -80,9 +80,21 @@ const mapTopicToSample = (topicId) => {
     return 'math_algebra_01';
 };
 
-const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
+const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack, mode = 'single' }) => {
     const setKey = useMemo(() => mapTopicToSample(topicId), [topicId]);
-    const questions = useMemo(() => SAMPLE_SETS[setKey], [setKey]);
+    const baseQuestions = useMemo(() => SAMPLE_SETS[setKey], [setKey]);
+    const questions = useMemo(() => {
+        if (mode === 'random') {
+            // shallow shuffle
+            const arr = [...baseQuestions];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+        return baseQuestions;
+    }, [baseQuestions, mode]);
 
     const [index, setIndex] = useState(0);
     const [selected, setSelected] = useState(null);
@@ -101,6 +113,19 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
         const id = setInterval(() => setElapsed((e) => e + 1), 1000);
         return () => clearInterval(id);
     }, [timerActive]);
+
+    // Rapid fire: auto-submit after 10 seconds per question
+    useEffect(() => {
+        if (mode !== 'rapid' || submitted) return;
+        if (elapsed >= 10) {
+            // auto submit, no selection counts as wrong
+            setSubmitted(true);
+            setAttempts((a) => a + 1);
+            setTimerActive(false);
+            setStreak(0);
+            setShowStats(true);
+        }
+    }, [elapsed, mode, submitted]);
 
     const total = questions.length;
     const progressPct = Math.round(((index + 1) / total) * 100);
@@ -302,6 +327,12 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                                 <div className="text-2xl font-bold">{index + 1}</div>
                                 <div className="text-xs opacity-80">Q INDEX</div>
                             </div>
+                            {mode === 'rapid' && (
+                                <div className="text-center">
+                                    <div className={`text-2xl font-bold ${elapsed >= 7 ? 'text-red-400' : ''}`}>{Math.max(0, 10 - elapsed)}s</div>
+                                    <div className="text-xs opacity-80">TIMER</div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </header>
