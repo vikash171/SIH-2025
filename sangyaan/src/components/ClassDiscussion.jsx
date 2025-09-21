@@ -22,7 +22,7 @@ const sampleThreads = [
   }
 ];
 
-export default function ClassDiscussion({ onBack }) {
+export default function ClassDiscussion({ onBack, classMeta }) {
   const [threads, setThreads] = useState(sampleThreads);
   const [newTitle, setNewTitle] = useState('');
   const [newBody, setNewBody] = useState('');
@@ -49,15 +49,25 @@ export default function ClassDiscussion({ onBack }) {
     setNewBody('');
   };
 
+  const title = classMeta?.name || 'Class Discussion';
+  const subtitle = classMeta?.subject ? `${classMeta.subject[0].toUpperCase()}${classMeta.subject.slice(1)}` : 'General';
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={onBack} className="text-gray-600 hover:text-indigo-600">← Back</button>
-            <h1 className="text-xl font-semibold text-gray-800">Class Discussion</h1>
+            <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
           </div>
-          <div className="hidden md:block text-sm text-gray-500">Physics - Grade 10</div>
+          <div className="hidden md:block text-sm text-gray-500">
+            {classMeta?.from === 'teacher' && classMeta?.teacher ? (
+              <span>{subtitle} • {classMeta.teacher} • {classMeta.studentCount || 0} students</span>
+            ) : classMeta?.from === 'student' ? (
+              <span>{subtitle} • by {classMeta?.owner || 'Student'} • {classMeta?.studentCount || 1} members</span>
+            ) : (
+              <span>Discussion space</span>
+            )}
+          </div>
         </div>
       </header>
 
