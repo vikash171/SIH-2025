@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { studentDb } from '../db.js';
 import TeacherSidebar from './sidebar.jsx';
+import TeacherClassDetail from './TeacherClassDetail.jsx';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const TeacherDashboard = () => {
@@ -8,6 +9,8 @@ const TeacherDashboard = () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [studentsData, setStudentsData] = useState([]);
+    const [view, setView] = useState('dashboard'); // dashboard | classDetail
+    const [selectedClass, setSelectedClass] = useState(null);
     const [statsData, setStatsData] = useState({
         totalStudents: 0,
         activeStudents: 0,
@@ -17,6 +20,40 @@ const TeacherDashboard = () => {
     });
     const [isLoading, setIsLoading] = useState(true);
     const { t } = useLanguage();
+
+    // Sample teacher classes
+    const teacherClasses = [
+        {
+            id: 'tc1',
+            className: 'Mathematics - Grade 10',
+            subject: 'mathematics',
+            totalStudents: 35,
+            schedule: 'Mon, Wed, Fri 9:00 AM',
+            room: 'Room 201',
+            nextClass: 'Today 9:00 AM',
+            status: 'Active',
+        },
+        {
+            id: 'tc2',
+            className: 'Physics - Grade 11',
+            subject: 'physics',
+            totalStudents: 28,
+            schedule: 'Tue, Thu 11:00 AM',
+            room: 'Room 305',
+            nextClass: 'Tomorrow 11:00 AM',
+            status: 'Active',
+        },
+        {
+            id: 'tc3',
+            className: 'Chemistry - Grade 12',
+            subject: 'chemistry',
+            totalStudents: 22,
+            schedule: 'Mon, Wed, Fri 2:00 PM',
+            room: 'Room 401',
+            nextClass: 'Monday 2:00 PM',
+            status: 'Upcoming',
+        },
+    ];
 
     // Initialize data from IndexedDB
     useEffect(() => {
@@ -42,6 +79,16 @@ const TeacherDashboard = () => {
 
         initializeData();
     }, []);
+
+    const handleClassClick = (classData) => {
+        setSelectedClass(classData);
+        setView('classDetail');
+    };
+
+    const handleBackToDashboard = () => {
+        setView('dashboard');
+        setSelectedClass(null);
+    };
 
     // Filter students based on search
     const filteredStudents = studentsData.filter(student =>
@@ -71,6 +118,20 @@ const TeacherDashboard = () => {
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-lg text-gray-600">Loading dashboard...</div>
             </div>
+        );
+    }
+
+    // Render class detail view
+    if (view === 'classDetail' && selectedClass) {
+        return (
+            <TeacherClassDetail
+                classData={selectedClass}
+                onBack={handleBackToDashboard}
+                onNavigate={(page) => {
+                    // Navigate to other app pages if needed
+                    console.log('Navigate to:', page);
+                }}
+            />
         );
     }
 
@@ -420,80 +481,70 @@ const TeacherDashboard = () => {
                     {activeTab === 'classes' && (
                         <div className="space-y-6">
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-900 mb-4">{t('teacher.classesManagement')}</h2>
-                                
-                                {/* Add New Class Button */}
-                                <div className="mb-6">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-xl font-bold text-gray-900">{t('teacher.classesManagement')}</h2>
                                     <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
                                         <span>➕</span>
                                         <span>{t('teacher.createNewClass')}</span>
                                     </button>
                                 </div>
 
-                                {/* Class List */}
+                                {/* Class Cards */}
                                 <div className="space-y-4">
-                                    <div className="border border-gray-200 rounded-lg p-4">
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <h3 className="text-lg font-semibold text-gray-900">Mathematics - Grade 10</h3>
-                                                <p className="text-gray-600 text-sm mt-1">35 students • Room 201 • Mon, Wed, Fri 9:00 AM</p>
-                                                <div className="flex space-x-4 mt-2">
-                                                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Active</span>
-                                                    <span className="text-gray-500 text-xs">Next: Today 9:00 AM</span>
+                                    {teacherClasses.map((classData) => (
+                                        <div 
+                                            key={classData.id}
+                                            onClick={() => handleClassClick(classData)}
+                                            className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer hover:border-indigo-300"
+                                        >
+                                            <div className="flex justify-between items-start">
+                                                <div className="flex items-start space-x-4">
+                                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl ${
+                                                        classData.subject === 'mathematics' ? 'bg-orange-500' :
+                                                        classData.subject === 'physics' ? 'bg-blue-500' :
+                                                        classData.subject === 'chemistry' ? 'bg-green-500' :
+                                                        'bg-purple-500'
+                                                    }`}>
+                                                        {classData.subject === 'mathematics' ? '🧮' :
+                                                         classData.subject === 'physics' ? '⚛️' :
+                                                         classData.subject === 'chemistry' ? '🧪' : '📚'}
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="text-lg font-semibold text-gray-900">{classData.className}</h3>
+                                                        <p className="text-gray-600 text-sm mt-1">{classData.totalStudents} students • {classData.room} • {classData.schedule}</p>
+                                                        <div className="flex space-x-4 mt-2">
+                                                            <span className={`px-2 py-1 rounded-full text-xs ${
+                                                                classData.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                                            }`}>
+                                                                {classData.status}
+                                                            </span>
+                                                            <span className="text-gray-500 text-xs">Next: {classData.nextClass}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex space-x-2">
+                                                    <button 
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleClassClick(classData);
+                                                        }}
+                                                        className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                                                    >
+                                                        📝 Manage
+                                                    </button>
+                                                    <button 
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleClassClick(classData);
+                                                        }}
+                                                        className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                                    >
+                                                        👁️ View
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div className="flex space-x-2">
-                                                <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 {t('teacher.edit')}
-                                                </button>
-                                                <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ {t('teacher.view')}
-                                                </button>
-                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div className="border border-gray-200 rounded-lg p-4">
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <h3 className="text-lg font-semibold text-gray-900">Physics - Grade 11</h3>
-                                                <p className="text-gray-600 text-sm mt-1">28 students • Room 305 • Tue, Thu 11:00 AM</p>
-                                                <div className="flex space-x-4 mt-2">
-                                                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Active</span>
-                                                    <span className="text-gray-500 text-xs">Next: Tomorrow 11:00 AM</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex space-x-2">
-                                                <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 {t('teacher.edit')}
-                                                </button>
-                                                <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ {t('teacher.view')}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="border border-gray-200 rounded-lg p-4">
-                                        <div className="flex justify-between items-start">
-                                            <div>
-                                                <h3 className="text-lg font-semibold text-gray-900">Chemistry - Grade 12</h3>
-                                                <p className="text-gray-600 text-sm mt-1">22 students • Room 401 • Mon, Wed, Fri 2:00 PM</p>
-                                                <div className="flex space-x-4 mt-2">
-                                                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Upcoming</span>
-                                                    <span className="text-gray-500 text-xs">Next: Monday 2:00 PM</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex space-x-2">
-                                                <button className="text-blue-500 hover:text-blue-700 px-3 py-1 text-sm">
-                                                    📝 {t('teacher.edit')}
-                                                </button>
-                                                <button className="text-gray-500 hover:text-gray-700 px-3 py-1 text-sm">
-                                                    👁️ {t('teacher.view')}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
