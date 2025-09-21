@@ -8,6 +8,7 @@ import VirtualLab from './components/VirtualLab';
 import Leaderboard from './components/Leaderboard';
 import Events from './components/Events';
 import TeacherDashboard from './components/TeacherDaashboard';
+import ParentsDashboard from './components/ParentsDashboard';
 
 const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('homepage');
@@ -33,6 +34,8 @@ const AppContent = () => {
         return <Events onNavigate={navigate} />;
       case 'teacher':
         return <TeacherDashboard />;
+      case 'parents':
+        return <ParentsDashboard />;
       default:
         return <Homepage onNavigate={navigate} />;
     }
@@ -107,6 +110,15 @@ const AppContent = () => {
             >
               <span className="text-xl mb-1">👨‍🏫</span>
               <span className="text-xs font-medium">Teacher</span>
+            </button>
+
+            <button
+              onClick={() => navigate('parents')}
+              className={`flex flex-col items-center p-2 rounded-lg transition ${currentPage === 'parents' ? 'theme-primary text-white' : 'text-gray-600 hover:text-gray-800'
+                }`}
+            >
+              <span className="text-xl mb-1">👨‍👩‍👧‍👦</span>
+              <span className="text-xs font-medium">Parents</span>
             </button>
           </div>
         </div>
