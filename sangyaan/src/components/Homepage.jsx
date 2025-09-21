@@ -71,7 +71,7 @@ const Homepage = ({ onNavigate }) => {
 
                         {/* Profile Component */}
                         <Profile
-                            userName="Alex Johnson"
+                            userName="sangyaan"
                             userLevel="Level 12 Explorer"
                             userXP={2450}
                             userStreak={7}
@@ -89,7 +89,7 @@ const Homepage = ({ onNavigate }) => {
                                 <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow theme-primary">
                                     <span className="text-5xl">🚀</span>
                                 </div>
-                                <h2 className="text-4xl font-bold mb-4 theme-text">{t('welcomeBack')}, Alex!</h2>
+                                <h2 className="text-4xl font-bold mb-4 theme-text">{t('welcomeBack')}, sangyaan!</h2>
                                 <p className="text-xl opacity-80 mb-2">{t('readyForAdventure')}</p>
                                 <div className="flex items-center justify-center space-x-4 text-sm">
                                     <div className="flex items-center space-x-2 theme-card px-4 py-2 rounded-full shadow-sm">
