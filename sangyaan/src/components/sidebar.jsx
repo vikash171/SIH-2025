@@ -20,6 +20,12 @@ const TeacherSidebar = ({ activeTab, onTabChange, isCollapsed, onToggle }) => {
             name: 'Classes',
             icon: '🏫',
             description: 'Class management'
+        },
+        {
+            id: 'leaderboard',
+            name: 'Leaderboard',
+            icon: '🏆',
+            description: 'Top performers'
         }
     ];
 

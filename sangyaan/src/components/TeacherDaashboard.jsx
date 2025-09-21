@@ -43,6 +43,24 @@ const TeacherDashboard = () => {
         student.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Get top performers for leaderboard
+    const topPerformers = [...studentsData]
+        .sort((a, b) => b.progress - a.progress)
+        .slice(0, 10);
+
+    // Get students needing attention
+    const studentsNeedingAttention = studentsData.filter(student => 
+        student.progress < 50 || student.status === 'Inactive'
+    );
+
+    // Calculate class analytics
+    const classAnalytics = {
+        averageScore: Math.round(studentsData.reduce((sum, student) => sum + student.progress, 0) / studentsData.length || 0),
+        topScore: Math.max(...studentsData.map(s => s.progress), 0),
+        activeToday: studentsData.filter(s => s.lastActive === 'Today').length,
+        weeklyGrowth: studentsData.filter(s => s.progress > 70).length
+    };
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -144,15 +162,166 @@ const TeacherDashboard = () => {
                             {/* Chart Section */}
                             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
                                 <div className="flex justify-between items-center mb-6">
-                                    <h2 className="text-xl font-bold text-gray-900">Student Progress Overview</h2>
+                                    <h2 className="text-xl font-bold text-gray-900">Class Performance Overview</h2>
                                     <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm">
                                         <option>Last 7 days</option>
                                         <option>Last 30 days</option>
                                         <option>Last 90 days</option>
                                     </select>
                                 </div>
-                                <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <p className="text-gray-500">📊 Chart Coming Soon</p>
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                                    <div className="text-center p-4 bg-blue-50 rounded-lg">
+                                        <div className="text-2xl font-bold text-blue-600">{classAnalytics.averageScore}%</div>
+                                        <div className="text-sm text-gray-600">Class Average</div>
+                                    </div>
+                                    <div className="text-center p-4 bg-green-50 rounded-lg">
+                                        <div className="text-2xl font-bold text-green-600">{classAnalytics.topScore}%</div>
+                                        <div className="text-sm text-gray-600">Highest Score</div>
+                                    </div>
+                                    <div className="text-center p-4 bg-purple-50 rounded-lg">
+                                        <div className="text-2xl font-bold text-purple-600">{classAnalytics.activeToday}</div>
+                                        <div className="text-sm text-gray-600">Active Today</div>
+                                    </div>
+                                    <div className="text-center p-4 bg-orange-50 rounded-lg">
+                                        <div className="text-2xl font-bold text-orange-600">{classAnalytics.weeklyGrowth}</div>
+                                        <div className="text-sm text-gray-600">High Performers</div>
+                                    </div>
+                                </div>
+                                <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <p className="text-gray-500">📊 Performance trends visualization</p>
+                                </div>
+                            </div>
+
+                            {/* Recent Activity */}
+                            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Student Activity</h2>
+                                <div className="space-y-3">
+                                    {studentsData.slice(0, 5).map((student, index) => (
+                                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                                                    {student.avatar}
+                                                </div>
+                                                <div>
+                                                    <div className="font-semibold text-gray-900">{student.name}</div>
+                                                    <div className="text-sm text-gray-600">Progress: {student.progress}%</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-sm font-semibold text-gray-900">Level {student.level}</div>
+                                                <div className="text-xs text-gray-500">{student.lastActive}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Students Needing Attention */}
+                            {studentsNeedingAttention.length > 0 && (
+                                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                    <h2 className="text-xl font-bold text-gray-900 mb-4">⚠️ Students Needing Attention</h2>
+                                    <div className="space-y-3">
+                                        {studentsNeedingAttention.slice(0, 3).map((student, index) => (
+                                            <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm">
+                                                        {student.avatar}
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-semibold text-gray-900">{student.name}</div>
+                                                        <div className="text-sm text-red-600">
+                                                            {student.status === 'Inactive' ? 'Inactive for 5+ days' : `Low progress: ${student.progress}%`}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                                    Contact
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Leaderboard Tab */}
+                    {activeTab === 'leaderboard' && (
+                        <div className="space-y-6">
+                            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                <h2 className="text-xl font-bold text-gray-900 mb-6">🏆 Top Performers</h2>
+                                <div className="space-y-4">
+                                    {topPerformers.map((student, index) => (
+                                        <div key={index} className={`flex items-center justify-between p-4 rounded-lg ${
+                                            index === 0 ? 'bg-yellow-50 border-2 border-yellow-200' :
+                                            index === 1 ? 'bg-gray-50 border-2 border-gray-200' :
+                                            index === 2 ? 'bg-orange-50 border-2 border-orange-200' :
+                                            'bg-white border border-gray-200'
+                                        }`}>
+                                            <div className="flex items-center space-x-4">
+                                                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${
+                                                    index === 0 ? 'bg-yellow-500' :
+                                                    index === 1 ? 'bg-gray-400' :
+                                                    index === 2 ? 'bg-orange-500' :
+                                                    'bg-blue-500'
+                                                }`}>
+                                                    {index < 3 ? ['🥇', '🥈', '🥉'][index] : index + 1}
+                                                </div>
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                                                        {student.avatar}
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold text-gray-900">{student.name}</div>
+                                                        <div className="text-sm text-gray-600">Level {student.level}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-2xl font-bold text-gray-900">{student.progress}%</div>
+                                                <div className="text-sm text-gray-600">💎 {student.gems} gems</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Performance Categories */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                    <h3 className="text-lg font-bold text-green-700 mb-4">🌟 Excellent (90%+)</h3>
+                                    <div className="space-y-2">
+                                        {studentsData.filter(s => s.progress >= 90).map((student, index) => (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <span className="text-gray-900">{student.name}</span>
+                                                <span className="text-green-600 font-semibold">{student.progress}%</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                    <h3 className="text-lg font-bold text-blue-700 mb-4">📈 Good (70-89%)</h3>
+                                    <div className="space-y-2">
+                                        {studentsData.filter(s => s.progress >= 70 && s.progress < 90).map((student, index) => (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <span className="text-gray-900">{student.name}</span>
+                                                <span className="text-blue-600 font-semibold">{student.progress}%</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                                    <h3 className="text-lg font-bold text-orange-700 mb-4">📚 Improving (50-69%)</h3>
+                                    <div className="space-y-2">
+                                        {studentsData.filter(s => s.progress >= 50 && s.progress < 70).map((student, index) => (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <span className="text-gray-900">{student.name}</span>
+                                                <span className="text-orange-600 font-semibold">{student.progress}%</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
