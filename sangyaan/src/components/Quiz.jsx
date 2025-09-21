@@ -154,7 +154,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
     if (completed) {
         // Reward view (right-half widgets as a summary screen)
         return (
-            <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-700 to-yellow-600 p-4 md:p-8">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-700 p-4 md:p-8">
                 <div className="max-w-5xl mx-auto text-white">
                     <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 md:p-8 mb-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -218,7 +218,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             </h3>
                             <div className="grid grid-cols-3 gap-3">
                                 <div className="text-center">
-                                    <div className="bg-yellow-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1">⭐</div>
+                                    <div className="bg-indigo-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-1">⭐</div>
                                     <span className="text-xs">First Win</span>
                                 </div>
                                 <div className="text-center">
@@ -238,7 +238,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             </h3>
                             <div className="space-y-3">
                                 <div className="flex items-center">
-                                    <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center mr-3 text-black font-bold">1</div>
+                                    <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center mr-3 text-white font-bold">1</div>
                                     <div className="flex-1">
                                         <div className="font-medium">Alex Johnson</div>
                                         <div className="text-xs opacity-70">2,450 pts</div>
@@ -276,7 +276,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
     }
 
     return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-700 to-yellow-600 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-700 p-4 md:p-8">
             <div className="max-w-5xl mx-auto">
                 {/* Header */}
                 <header className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-6 text-white mb-6">
@@ -317,14 +317,14 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             <span>{progressPct}%</span>
                         </div>
                         <div className="w-full bg-white/20 rounded-full h-3">
-                            <div className="bg-gradient-to-r from-yellow-500 to-amber-500 h-3 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                            <div className="bg-gradient-to-r from-blue-500 to-indigo-500 h-3 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
                         </div>
                     </div>
 
                     {/* Question Area */}
                     <div className="mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">💡</div>
+                            <div className="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">💡</div>
                             <h2 className="text-xl md:text-2xl font-semibold">Challenge</h2>
                         </div>
 
@@ -350,7 +350,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                                                             : isSelected
                                                             ? 'bg-green-700/30 border-green-300 text-white shadow-md'
                                                             : 'bg-white/10 hover:bg-white/15 border-white/20 hover:border-white/40 hover:shadow-md'
-                                                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70`}
+                                                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-300/70`}
                                                 >
                                                     <div className="flex items-start gap-3">
                                                         <div className={`rounded-full w-9 h-9 flex items-center justify-center font-bold shrink-0 ${
@@ -370,7 +370,7 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                         {/* Hint Button */}
                         <div className="mt-6 flex justify-center">
                             <button
-                                className="bg-amber-700 hover:bg-amber-800 text-white py-2 px-6 rounded-full flex items-center transition-all"
+                                className="bg-slate-700 hover:bg-slate-800 text-white py-2 px-6 rounded-full flex items-center transition-all"
                                 onClick={() => setShowHint(true)}
                                 disabled={showHint}
                             >
@@ -429,14 +429,14 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
             {showStats && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
-                        <div className="px-6 py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white flex items-center justify-between">
+                        <div className="px-6 py-4 bg-gradient-to-r from-slate-600 to-slate-500 text-white flex items-center justify-between">
                             <h3 className="text-lg font-semibold">Your Stats</h3>
                             <button onClick={() => setShowStats(false)} className="hover:opacity-90">✖</button>
                         </div>
-                        <div className="p-6 grid grid-cols-2 gap-4">
-                            <div className="bg-amber-50 rounded-lg p-4">
-                                <div className="text-xs text-amber-700 mb-1">Time Taken</div>
-                                <div className="text-2xl font-bold text-amber-800">{elapsed}s</div>
+                                                <div className="p-6 grid grid-cols-2 gap-4">
+                            <div className="bg-slate-50 rounded-lg p-4">
+                                <div className="text-xs text-slate-700 mb-1">Time Taken</div>
+                                <div className="text-2xl font-bold text-slate-800">{elapsed}s</div>
                             </div>
                             <div className="bg-emerald-50 rounded-lg p-4">
                                 <div className="text-xs text-emerald-700 mb-1">Attempts</div>
@@ -444,11 +444,11 @@ const Quiz = ({ topicId = 'math_algebra_01', onQuizComplete, onBack }) => {
                             </div>
                             <div className="col-span-2 bg-indigo-50 rounded-lg p-4">
                                 <div className="text-xs text-indigo-700 mb-1">Leaderboard Snapshot</div>
-                                <div className="text-sm text-indigo-900">You’re currently ranked top 25% for this question.</div>
+                                <div className="text-sm text-indigo-900">You're currently ranked top 25% for this question.</div>
                             </div>
-                            <div className="col-span-2 bg-yellow-50 rounded-lg p-4">
-                                <div className="text-xs text-yellow-700 mb-1">Achievements & Rewards</div>
-                                <div className="text-sm text-yellow-900">⭐ +10 Star points {submitted && selected === current.correct ? '(Correct!)' : '(Try again next!)'}</div>
+                            <div className="col-span-2 bg-gray-50 rounded-lg p-4">
+                                <div className="text-xs text-gray-700 mb-1">Achievements & Rewards</div>
+                                <div className="text-sm text-gray-900">⭐ +10 Star points {submitted && selected === current.correct ? '(Correct!)' : '(Try again next!)'}</div>
                             </div>
                         </div>
                         <div className="px-6 py-4 flex justify-end gap-2 border-t">
