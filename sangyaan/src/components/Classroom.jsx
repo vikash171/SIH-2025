@@ -11,10 +11,13 @@
  * - Gamified stats display
  */
 
+import { useState } from 'react';
 import Class from './Class';
 import Profile from './Profile';
+import ClassDiscussion from './ClassDiscussion';
 
 const Classroom = ({ onNavigate }) => {
+    const [view, setView] = useState('main'); // main | discussion
     // Mock data - single class for now
     const mockClass = {
         className: "Physics - Grade 10",
@@ -32,7 +35,11 @@ const Classroom = ({ onNavigate }) => {
     };
 
     const handleBackClick = () => {
-        onNavigate('homepage');
+        if (view === 'discussion') {
+            setView('main');
+        } else {
+            onNavigate('homepage');
+        }
     };
 
     return (
@@ -63,6 +70,8 @@ const Classroom = ({ onNavigate }) => {
 
             {/* Main Content */}
             <div className="max-w-4xl mx-auto px-4 py-8">
+                {view === 'main' && (
+                <>
                 {/* Stats Cards */}
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                     <div className="theme-card rounded-xl p-6 shadow-sm text-center">
@@ -109,7 +118,7 @@ const Classroom = ({ onNavigate }) => {
                 <div className="theme-card rounded-xl p-6 shadow-sm">
                     <h3 className="text-lg font-semibold theme-text mb-4">Quick Actions</h3>
                     <div className="grid md:grid-cols-2 gap-4">
-                        <button className="w-full theme-primary text-white p-4 rounded-xl hover:opacity-90 transition flex items-center justify-center space-x-2">
+                        <button onClick={() => setView('discussion')} className="w-full theme-primary text-white p-4 rounded-xl hover:opacity-90 transition flex items-center justify-center space-x-2">
                             <span className="text-xl">💬</span>
                             <span className="font-semibold">Class Discussion</span>
                         </button>
@@ -119,6 +128,12 @@ const Classroom = ({ onNavigate }) => {
                         </button>
                     </div>
                 </div>
+                </>
+                )}
+
+                {view === 'discussion' && (
+                    <ClassDiscussion onBack={() => setView('main')} />
+                )}
             </div>
         </div>
     );

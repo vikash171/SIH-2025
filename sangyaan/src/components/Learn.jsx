@@ -4,9 +4,10 @@ import TopicSelection from './TopicSelection';
 import Level_view from './Level_view';
 import learningData from '../data/learningData.json';
 import './Learn.css';
+import Quiz from './Quiz';
 
 const Learn = () => {
-    const [currentView, setCurrentView] = useState('adventure'); // 'adventure', 'topicSelection', 'levelView'
+    const [currentView, setCurrentView] = useState('adventure'); // 'adventure', 'topicSelection', 'levelView', 'quiz'
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedTopic, setSelectedTopic] = useState(null);
     const [userProgress, setUserProgress] = useState({});
@@ -118,20 +119,37 @@ const Learn = () => {
         setCurrentLevelData(null);
     };
 
-    const handleLevelClick = (levelNumber) => {
+    const handleLevelClick = () => {
         if (!selectedSubject || !selectedTopic || !currentLevelData) return;
 
-        // Check if level is accessible
-        const isAccessible = levelNumber <= currentLevelData.currentLevel;
-        if (!isAccessible) return;
+        // Navigate to Quiz view
+        setCurrentView('quiz');
+    };
 
-        // Here you would typically navigate to the quiz/lesson for this level
-        console.log(`Starting level ${levelNumber} for ${selectedTopic.name} in ${selectedSubject.name}`);
+    const makeTopicIdForQuiz = () => {
+        // map current selection to a dummy topic id understood by Quiz
+        if (!selectedSubject || !selectedTopic) return 'math_algebra_01';
+        // simple mapping examples
+        if (selectedSubject.id === 'mathematics' && selectedTopic.id === 'algebra') return 'math_algebra_01';
+        if (selectedSubject.id === 'physics') return 'phy_8_gravity_01';
+        return 'math_algebra_01';
+    };
 
-        // For demo purposes, let's simulate completing a level
-        if (levelNumber === currentLevelData.currentLevel && !currentLevelData.completedLevels.includes(levelNumber)) {
+    const handleQuizBack = () => {
+        setCurrentView('levelView');
+    };
+
+    const handleQuizComplete = ({ percentage }) => {
+        // unlock next level if >= 70%
+        if (!selectedSubject || !selectedTopic || !currentLevelData) {
+            setCurrentView('levelView');
+            return;
+        }
+        const levelNumber = currentLevelData.currentLevel;
+        if (percentage >= 70) {
             handleLevelComplete(levelNumber);
         }
+        setCurrentView('levelView');
     };
 
     const handleLevelComplete = (levelNumber) => {
@@ -259,6 +277,14 @@ const Learn = () => {
                     </div>
                 </div>
             )}
+
+            {currentView === 'quiz' && (
+                <Quiz
+                    topicId={makeTopicIdForQuiz()}
+                    onBack={handleQuizBack}
+                    onQuizComplete={handleQuizComplete}
+                />)
+            }
         </div>
     );
 };

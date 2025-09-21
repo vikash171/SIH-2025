@@ -21,7 +21,7 @@ const Level = ({
 }) => {
 
     const handleClick = () => {
-        if (!isLocked && onLevelClick) {
+        if (onLevelClick) {
             onLevelClick(levelNumber);
         }
     };
@@ -48,9 +48,7 @@ const Level = ({
         <div className={`level-node ${getLevelOpacity()}`}>
             <button
                 onClick={handleClick}
-                disabled={isLocked}
-                className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-lg relative transition-all transform hover:scale-110 ${getLevelStyle()} ${!isLocked ? 'cursor-pointer' : 'cursor-not-allowed'
-                    }`}
+                className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-lg relative transition-all transform hover:scale-110 ${getLevelStyle()} cursor-pointer`}
             >
                 {/* Level Number */}
                 <span className="text-2xl md:text-3xl font-bold text-white">
