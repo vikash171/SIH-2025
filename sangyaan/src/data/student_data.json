@@ -1,0 +1,384 @@
+{
+  "personalInfo": {
+    "id": "STU001",
+    "firstName": "Emma",
+    "lastName": "Johnson",
+    "fullName": "Emma Johnson",
+    "email": "emma.johnson@school.edu",
+    "phone": "+1-555-0123",
+    "dateOfBirth": "2008-03-15",
+    "age": 17,
+    "gender": "Female",
+    "avatar": "👩‍🎓",
+    "profilePicture": "/assets/profiles/emma_johnson.jpg",
+    "address": {
+      "street": "123 Oak Street",
+      "city": "Springfield",
+      "state": "CA",
+      "zipCode": "90210",
+      "country": "USA"
+    },
+    "emergencyContact": {
+      "name": "Sarah Johnson",
+      "relationship": "Mother",
+      "phone": "+1-555-0124",
+      "email": "sarah.johnson@email.com"
+    }
+  },
+  "academicInfo": {
+    "studentId": "2024001",
+    "grade": 11,
+    "section": "A",
+    "rollNumber": "11A001",
+    "admissionDate": "2021-08-15",
+    "currentYear": "2024-2025",
+    "status": "Active"
+  },
+  "gameProgress": {
+    "currentLevel": 12,
+    "totalXP": 2450,
+    "gems": 450,
+    "coins": 1250,
+    "streakDays": 15,
+    "longestStreak": 28,
+    "totalPlayTime": "127h 32m",
+    "averageSessionTime": "45m",
+    "lastActive": "2024-09-21T10:30:00Z",
+    "overallProgress": 85,
+    "weeklyGoal": 5,
+    "weeklyProgress": 4
+  },
+  "subjectProgress": {
+    "mathematics": {
+      "level": 14,
+      "progress": 87,
+      "xp": 980,
+      "chaptersCompleted": 12,
+      "totalChapters": 15,
+      "averageScore": 89,
+      "timeSpent": "42h 15m",
+      "lastStudied": "2024-09-21T09:15:00Z",
+      "topics": [
+        {
+          "name": "Algebra",
+          "progress": 95,
+          "mastery": "Expert",
+          "timeSpent": "12h 30m"
+        },
+        {
+          "name": "Geometry",
+          "progress": 82,
+          "mastery": "Proficient",
+          "timeSpent": "15h 45m"
+        },
+        {
+          "name": "Trigonometry",
+          "progress": 78,
+          "mastery": "Developing",
+          "timeSpent": "14h 0m"
+        }
+      ]
+    },
+    "physics": {
+      "level": 11,
+      "progress": 76,
+      "xp": 720,
+      "chaptersCompleted": 8,
+      "totalChapters": 12,
+      "averageScore": 84,
+      "timeSpent": "35h 22m",
+      "lastStudied": "2024-09-20T16:45:00Z",
+      "topics": [
+        {
+          "name": "Mechanics",
+          "progress": 88,
+          "mastery": "Proficient",
+          "timeSpent": "18h 15m"
+        },
+        {
+          "name": "Thermodynamics",
+          "progress": 65,
+          "mastery": "Developing",
+          "timeSpent": "12h 30m"
+        },
+        {
+          "name": "Optics",
+          "progress": 72,
+          "mastery": "Developing",
+          "timeSpent": "4h 37m"
+        }
+      ]
+    },
+    "chemistry": {
+      "level": 10,
+      "progress": 68,
+      "xp": 580,
+      "chaptersCompleted": 6,
+      "totalChapters": 10,
+      "averageScore": 81,
+      "timeSpent": "28h 45m",
+      "lastStudied": "2024-09-19T14:20:00Z",
+      "topics": [
+        {
+          "name": "Organic Chemistry",
+          "progress": 75,
+          "mastery": "Developing",
+          "timeSpent": "15h 20m"
+        },
+        {
+          "name": "Inorganic Chemistry",
+          "progress": 60,
+          "mastery": "Beginner",
+          "timeSpent": "8h 15m"
+        },
+        {
+          "name": "Physical Chemistry",
+          "progress": 70,
+          "mastery": "Developing",
+          "timeSpent": "5h 10m"
+        }
+      ]
+    },
+    "biology": {
+      "level": 9,
+      "progress": 62,
+      "xp": 470,
+      "chaptersCompleted": 5,
+      "totalChapters": 9,
+      "averageScore": 78,
+      "timeSpent": "21h 30m",
+      "lastStudied": "2024-09-18T11:30:00Z",
+      "topics": [
+        {
+          "name": "Cell Biology",
+          "progress": 85,
+          "mastery": "Proficient",
+          "timeSpent": "12h 45m"
+        },
+        {
+          "name": "Genetics",
+          "progress": 55,
+          "mastery": "Beginner",
+          "timeSpent": "6h 20m"
+        },
+        {
+          "name": "Ecology",
+          "progress": 45,
+          "mastery": "Beginner",
+          "timeSpent": "2h 25m"
+        }
+      ]
+    }
+  },
+  "achievements": {
+    "badges": [
+      {
+        "id": "streak_master",
+        "name": "Streak Master",
+        "description": "Maintained a 14-day learning streak",
+        "icon": "🔥",
+        "rarity": "rare",
+        "earnedDate": "2024-09-15T00:00:00Z"
+      },
+      {
+        "id": "math_wizard",
+        "name": "Math Wizard",
+        "description": "Completed 10 math chapters with 90+ average",
+        "icon": "🧙‍♀️",
+        "rarity": "epic",
+        "earnedDate": "2024-09-10T00:00:00Z"
+      },
+      {
+        "id": "quick_learner",
+        "name": "Quick Learner",
+        "description": "Completed 5 topics in a single day",
+        "icon": "⚡",
+        "rarity": "common",
+        "earnedDate": "2024-09-08T00:00:00Z"
+      },
+      {
+        "id": "lab_expert",
+        "name": "Lab Expert",
+        "description": "Completed 25 virtual lab experiments",
+        "icon": "🧪",
+        "rarity": "rare",
+        "earnedDate": "2024-09-05T00:00:00Z"
+      }
+    ],
+    "titles": [
+      {
+        "id": "mathematics_champion",
+        "name": "Mathematics Champion",
+        "isActive": true,
+        "earnedDate": "2024-09-10T00:00:00Z"
+      },
+      {
+        "id": "rising_star",
+        "name": "Rising Star",
+        "isActive": false,
+        "earnedDate": "2024-08-25T00:00:00Z"
+      }
+    ],
+    "milestones": [
+      {
+        "name": "First 1000 XP",
+        "completedDate": "2024-08-20T00:00:00Z",
+        "reward": "100 gems"
+      },
+      {
+        "name": "Level 10 Reached",
+        "completedDate": "2024-09-01T00:00:00Z",
+        "reward": "Special Avatar Frame"
+      },
+      {
+        "name": "First Subject Mastery",
+        "completedDate": "2024-09-10T00:00:00Z",
+        "reward": "Mathematics Champion Title"
+      }
+    ]
+  },
+  "activityHistory": {
+    "recentSessions": [
+      {
+        "date": "2024-09-21T10:30:00Z",
+        "subject": "mathematics",
+        "topic": "Quadratic Equations",
+        "duration": "45m",
+        "xpGained": 85,
+        "score": 92,
+        "completed": true
+      },
+      {
+        "date": "2024-09-20T16:45:00Z",
+        "subject": "physics",
+        "topic": "Newton's Laws",
+        "duration": "38m",
+        "xpGained": 72,
+        "score": 87,
+        "completed": true
+      },
+      {
+        "date": "2024-09-20T15:30:00Z",
+        "subject": "chemistry",
+        "topic": "Chemical Bonding",
+        "duration": "42m",
+        "xpGained": 68,
+        "score": 83,
+        "completed": true
+      },
+      {
+        "date": "2024-09-19T14:20:00Z",
+        "subject": "biology",
+        "topic": "Photosynthesis",
+        "duration": "35m",
+        "xpGained": 55,
+        "score": 79,
+        "completed": true
+      }
+    ],
+    "weeklyActivity": {
+      "monday": { "minutes": 85, "xp": 142 },
+      "tuesday": { "minutes": 92, "xp": 156 },
+      "wednesday": { "minutes": 78, "xp": 128 },
+      "thursday": { "minutes": 105, "xp": 178 },
+      "friday": { "minutes": 68, "xp": 112 },
+      "saturday": { "minutes": 45, "xp": 75 },
+      "sunday": { "minutes": 52, "xp": 88 }
+    },
+    "monthlyStats": {
+      "totalSessions": 84,
+      "totalTime": "62h 15m",
+      "totalXP": 1850,
+      "averageScore": 86,
+      "subjectsStudied": 4,
+      "topicsCompleted": 28
+    }
+  },
+  "quiz": {
+    "totalQuizzesTaken": 0,
+    "totalCorrectAnswers": 0,
+    "totalWrongAnswers": 0,
+    "averageScore": 0,
+    "bestScore": 0,
+    "recentQuizzes": [],
+    "favoriteTopics": [],
+    "weakTopics": []
+  },
+  "learn": {
+    "totalLessonsCompleted": 0,
+    "totalTimeSpent": "0h 0m",
+    "currentCourse": null,
+    "completedCourses": [],
+    "bookmarkedLessons": [],
+    "learningPath": [],
+    "certificates": []
+  },
+  "social": {
+    "friends": [
+      {
+        "id": "STU002",
+        "name": "Michael Smith",
+        "avatar": "👨‍🎓",
+        "level": 9,
+        "status": "online"
+      },
+      {
+        "id": "STU003",
+        "name": "Sophia Williams",
+        "avatar": "👩‍🎓",
+        "level": 6,
+        "status": "offline"
+      }
+    ],
+    "studyGroups": [
+      {
+        "id": "GRP001",
+        "name": "Math Masters",
+        "subject": "mathematics",
+        "members": 8,
+        "isActive": true
+      }
+    ],
+    "leaderboard": {
+      "globalRank": 156,
+      "classRank": 3,
+      "subjectRanks": {
+        "mathematics": 2,
+        "physics": 5,
+        "chemistry": 8,
+        "biology": 12
+      }
+    }
+  },
+  "preferences": {
+    "theme": "light",
+    "language": "en",
+    "notifications": {
+      "achievements": true,
+      "reminders": true,
+      "friendActivity": false,
+      "weeklyReports": true
+    },
+    "learningStyle": "visual",
+    "difficultyPreference": "challenging",
+    "studyReminders": {
+      "enabled": true,
+      "time": "18:00",
+      "frequency": "daily"
+    }
+  },
+  "parents": {
+    "mother": {
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@email.com",
+      "phone": "+1-555-0124",
+      "accessLevel": "full"
+    },
+    "father": {
+      "name": "David Johnson",
+      "email": "david.johnson@email.com",
+      "phone": "+1-555-0125",
+      "accessLevel": "full"
+    }
+  }
+}

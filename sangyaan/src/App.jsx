@@ -7,6 +7,7 @@ import Learn from './components/Learn';
 import VirtualLab from './components/VirtualLab';
 import Leaderboard from './components/Leaderboard';
 import Events from './components/Events';
+import TeacherDashboard from './components/TeacherDaashboard';
 
 const AppContent = () => {
   const [currentPage, setCurrentPage] = useState('homepage');
@@ -30,6 +31,8 @@ const AppContent = () => {
         return <Leaderboard onNavigate={navigate} />;
       case 'events':
         return <Events onNavigate={navigate} />;
+      case 'teacher':
+        return <TeacherDashboard />;
       default:
         return <Homepage onNavigate={navigate} />;
     }
@@ -95,6 +98,15 @@ const AppContent = () => {
             >
               <span className="text-xl mb-1">📅</span>
               <span className="text-xs font-medium">{t('events')}</span>
+            </button>
+
+            <button
+              onClick={() => navigate('teacher')}
+              className={`flex flex-col items-center p-2 rounded-lg transition ${currentPage === 'teacher' ? 'theme-primary text-white' : 'text-gray-600 hover:text-gray-800'
+                }`}
+            >
+              <span className="text-xl mb-1">👨‍🏫</span>
+              <span className="text-xs font-medium">Teacher</span>
             </button>
           </div>
         </div>

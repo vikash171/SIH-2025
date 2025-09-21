@@ -1,0 +1,508 @@
+{
+  "personalInfo": {
+    "id": "TCH001",
+    "firstName": "Dr. John",
+    "lastName": "Smith",
+    "fullName": "Dr. John Smith",
+    "title": "Dr.",
+    "email": "john.smith@school.edu",
+    "phone": "+1-555-0200",
+    "dateOfBirth": "1985-07-22",
+    "age": 39,
+    "gender": "Male",
+    "avatar": "👨‍🏫",
+    "profilePicture": "/assets/profiles/john_smith.jpg",
+    "address": {
+      "street": "456 Elm Avenue",
+      "city": "Springfield",
+      "state": "CA",
+      "zipCode": "90211",
+      "country": "USA"
+    },
+    "emergencyContact": {
+      "name": "Emily Smith",
+      "relationship": "Spouse",
+      "phone": "+1-555-0201",
+      "email": "emily.smith@email.com"
+    }
+  },
+  "professionalInfo": {
+    "employeeId": "EMP2019001",
+    "department": "Mathematics & Science",
+    "position": "Senior Teacher",
+    "specializations": ["Mathematics", "Physics", "Chemistry"],
+    "experience": "15 years",
+    "joinDate": "2019-08-15",
+    "salary": "$75,000",
+    "status": "Active",
+    "education": {
+      "degree": "Ph.D. in Mathematics",
+      "university": "Stanford University",
+      "graduationYear": 2008,
+      "certifications": [
+        "Teaching Excellence Certificate",
+        "Digital Learning Specialist",
+        "STEM Education Leadership"
+      ]
+    }
+  },
+  "currentClasses": [
+    {
+      "id": "CLS001",
+      "subject": "Mathematics",
+      "grade": 10,
+      "section": "A",
+      "className": "Mathematics - Grade 10A",
+      "room": "201",
+      "schedule": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "time": "09:00 AM - 10:00 AM",
+        "timezone": "PST"
+      },
+      "totalStudents": 35,
+      "activeStudents": 33,
+      "averageProgress": 78,
+      "averageScore": 84,
+      "status": "Active",
+      "nextClass": "2024-09-23T09:00:00Z",
+      "syllabus": {
+        "totalTopics": 15,
+        "completedTopics": 12,
+        "currentTopic": "Quadratic Equations",
+        "nextTopic": "Functions and Graphs"
+      }
+    },
+    {
+      "id": "CLS002",
+      "subject": "Physics",
+      "grade": 11,
+      "section": "B",
+      "className": "Physics - Grade 11B",
+      "room": "305",
+      "schedule": {
+        "days": ["Tuesday", "Thursday"],
+        "time": "11:00 AM - 12:30 PM",
+        "timezone": "PST"
+      },
+      "totalStudents": 28,
+      "activeStudents": 26,
+      "averageProgress": 72,
+      "averageScore": 81,
+      "status": "Active",
+      "nextClass": "2024-09-22T11:00:00Z",
+      "syllabus": {
+        "totalTopics": 12,
+        "completedTopics": 8,
+        "currentTopic": "Thermodynamics",
+        "nextTopic": "Wave Motion"
+      }
+    },
+    {
+      "id": "CLS003",
+      "subject": "Chemistry",
+      "grade": 12,
+      "section": "A",
+      "className": "Chemistry - Grade 12A",
+      "room": "401",
+      "schedule": {
+        "days": ["Monday", "Wednesday", "Friday"],
+        "time": "02:00 PM - 03:00 PM",
+        "timezone": "PST"
+      },
+      "totalStudents": 22,
+      "activeStudents": 20,
+      "averageProgress": 65,
+      "averageScore": 79,
+      "status": "Upcoming",
+      "nextClass": "2024-09-23T14:00:00Z",
+      "syllabus": {
+        "totalTopics": 10,
+        "completedTopics": 4,
+        "currentTopic": "Organic Chemistry Basics",
+        "nextTopic": "Aldehydes and Ketones"
+      }
+    }
+  ],
+  "students": [
+    {
+      "id": "STU001",
+      "name": "Emma Johnson",
+      "avatar": "👩‍🎓",
+      "grade": 10,
+      "section": "A",
+      "rollNumber": "10A001",
+      "classes": ["Mathematics"],
+      "overallProgress": 85,
+      "currentLevel": 12,
+      "gems": 450,
+      "lastActive": "2024-09-21T10:30:00Z",
+      "status": "Active",
+      "averageScore": 89,
+      "weakSubjects": ["Geometry"],
+      "strongSubjects": ["Algebra"],
+      "needsAttention": false,
+      "parentContact": {
+        "mother": {
+          "name": "Sarah Johnson",
+          "email": "sarah.johnson@email.com",
+          "phone": "+1-555-0124"
+        }
+      }
+    },
+    {
+      "id": "STU002",
+      "name": "Michael Smith",
+      "avatar": "👨‍🎓",
+      "grade": 10,
+      "section": "A",
+      "rollNumber": "10A002",
+      "classes": ["Mathematics"],
+      "overallProgress": 65,
+      "currentLevel": 9,
+      "gems": 320,
+      "lastActive": "2024-09-20T15:45:00Z",
+      "status": "Active",
+      "averageScore": 76,
+      "weakSubjects": ["Trigonometry"],
+      "strongSubjects": ["Arithmetic"],
+      "needsAttention": false,
+      "parentContact": {
+        "father": {
+          "name": "Robert Smith",
+          "email": "robert.smith@email.com",
+          "phone": "+1-555-0130"
+        }
+      }
+    },
+    {
+      "id": "STU003",
+      "name": "Sophia Williams",
+      "avatar": "👩‍🎓",
+      "grade": 10,
+      "section": "A",
+      "rollNumber": "10A003",
+      "classes": ["Mathematics"],
+      "overallProgress": 45,
+      "currentLevel": 6,
+      "gems": 210,
+      "lastActive": "2024-09-19T14:20:00Z",
+      "status": "Active",
+      "averageScore": 68,
+      "weakSubjects": ["Algebra", "Geometry"],
+      "strongSubjects": ["Basic Math"],
+      "needsAttention": true,
+      "parentContact": {
+        "mother": {
+          "name": "Lisa Williams",
+          "email": "lisa.williams@email.com",
+          "phone": "+1-555-0135"
+        }
+      }
+    },
+    {
+      "id": "STU004",
+      "name": "James Brown",
+      "avatar": "👨‍🎓",
+      "grade": 11,
+      "section": "B",
+      "rollNumber": "11B004",
+      "classes": ["Physics"],
+      "overallProgress": 30,
+      "currentLevel": 4,
+      "gems": 150,
+      "lastActive": "2024-09-16T12:00:00Z",
+      "status": "Inactive",
+      "averageScore": 58,
+      "weakSubjects": ["Mechanics", "Thermodynamics"],
+      "strongSubjects": [],
+      "needsAttention": true,
+      "parentContact": {
+        "father": {
+          "name": "Mark Brown",
+          "email": "mark.brown@email.com",
+          "phone": "+1-555-0140"
+        }
+      }
+    },
+    {
+      "id": "STU005",
+      "name": "Olivia Davis",
+      "avatar": "👩‍🎓",
+      "grade": 12,
+      "section": "A",
+      "rollNumber": "12A005",
+      "classes": ["Chemistry"],
+      "overallProgress": 90,
+      "currentLevel": 14,
+      "gems": 520,
+      "lastActive": "2024-09-21T11:15:00Z",
+      "status": "Active",
+      "averageScore": 94,
+      "weakSubjects": [],
+      "strongSubjects": ["Organic Chemistry", "Physical Chemistry"],
+      "needsAttention": false,
+      "parentContact": {
+        "mother": {
+          "name": "Rachel Davis",
+          "email": "rachel.davis@email.com",
+          "phone": "+1-555-0145"
+        }
+      }
+    }
+  ],
+  "dashboard": {
+    "stats": {
+      "totalStudents": 85,
+      "activeStudents": 79,
+      "averageProgress": 68,
+      "averageStudyTime": "4.2h",
+      "needAttention": 12,
+      "weeklyGrowth": {
+        "students": "+2",
+        "progress": "+5%",
+        "studyTime": "+0.5h",
+        "attention": "-2"
+      }
+    },
+    "recentActivity": [
+      {
+        "student": "Emma Johnson",
+        "action": "Completed Quadratic Equations",
+        "subject": "Mathematics",
+        "timestamp": "2024-09-21T10:30:00Z",
+        "score": 92
+      },
+      {
+        "student": "Olivia Davis",
+        "action": "Achieved Level 14",
+        "subject": "Chemistry",
+        "timestamp": "2024-09-21T11:15:00Z",
+        "score": null
+      },
+      {
+        "student": "Michael Smith",
+        "action": "Completed Newton's Laws",
+        "subject": "Physics",
+        "timestamp": "2024-09-20T16:45:00Z",
+        "score": 87
+      }
+    ],
+    "upcomingClasses": [
+      {
+        "className": "Physics - Grade 11B",
+        "time": "2024-09-22T11:00:00Z",
+        "room": "305",
+        "students": 28,
+        "topic": "Thermodynamics"
+      },
+      {
+        "className": "Mathematics - Grade 10A",
+        "time": "2024-09-23T09:00:00Z",
+        "room": "201",
+        "students": 35,
+        "topic": "Functions and Graphs"
+      },
+      {
+        "className": "Chemistry - Grade 12A",
+        "time": "2024-09-23T14:00:00Z",
+        "room": "401",
+        "students": 22,
+        "topic": "Aldehydes and Ketones"
+      }
+    ]
+  },
+  "notifications": [
+    {
+      "id": "NOT001",
+      "type": "assignment_submitted",
+      "title": "New Assignment Submission",
+      "message": "Emma Johnson submitted Quadratic Equations assignment",
+      "timestamp": "2024-09-21T10:35:00Z",
+      "isRead": false,
+      "priority": "medium"
+    },
+    {
+      "id": "NOT002",
+      "type": "student_achievement",
+      "title": "Student Achievement",
+      "message": "Olivia Davis earned 'Chemistry Expert' badge",
+      "timestamp": "2024-09-21T11:20:00Z",
+      "isRead": false,
+      "priority": "low"
+    },
+    {
+      "id": "NOT003",
+      "type": "attention_needed",
+      "title": "Student Needs Attention",
+      "message": "James Brown has been inactive for 5 days",
+      "timestamp": "2024-09-21T08:00:00Z",
+      "isRead": true,
+      "priority": "high"
+    }
+  ],
+  "schedule": {
+    "currentWeek": [
+      {
+        "day": "Monday",
+        "date": "2024-09-23",
+        "classes": [
+          {
+            "time": "09:00 AM",
+            "subject": "Mathematics",
+            "grade": "10A",
+            "room": "201",
+            "duration": "1h"
+          },
+          {
+            "time": "02:00 PM",
+            "subject": "Chemistry",
+            "grade": "12A",
+            "room": "401",
+            "duration": "1h"
+          }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "date": "2024-09-24",
+        "classes": [
+          {
+            "time": "11:00 AM",
+            "subject": "Physics",
+            "grade": "11B",
+            "room": "305",
+            "duration": "1.5h"
+          }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "date": "2024-09-25",
+        "classes": [
+          {
+            "time": "09:00 AM",
+            "subject": "Mathematics",
+            "grade": "10A",
+            "room": "201",
+            "duration": "1h"
+          },
+          {
+            "time": "02:00 PM",
+            "subject": "Chemistry",
+            "grade": "12A",
+            "room": "401",
+            "duration": "1h"
+          }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "date": "2024-09-26",
+        "classes": [
+          {
+            "time": "11:00 AM",
+            "subject": "Physics",
+            "grade": "11B",
+            "room": "305",
+            "duration": "1.5h"
+          }
+        ]
+      },
+      {
+        "day": "Friday",
+        "date": "2024-09-27",
+        "classes": [
+          {
+            "time": "09:00 AM",
+            "subject": "Mathematics",
+            "grade": "10A",
+            "room": "201",
+            "duration": "1h"
+          },
+          {
+            "time": "02:00 PM",
+            "subject": "Chemistry",
+            "grade": "12A",
+            "room": "401",
+            "duration": "1h"
+          }
+        ]
+      }
+    ]
+  },
+  "assessments": {
+    "recentTests": [
+      {
+        "id": "TEST001",
+        "subject": "Mathematics",
+        "topic": "Quadratic Equations",
+        "grade": "10A",
+        "date": "2024-09-20",
+        "totalStudents": 35,
+        "submitted": 33,
+        "averageScore": 84,
+        "highestScore": 98,
+        "lowestScore": 62
+      },
+      {
+        "id": "TEST002",
+        "subject": "Physics",
+        "topic": "Newton's Laws",
+        "grade": "11B",
+        "date": "2024-09-18",
+        "totalStudents": 28,
+        "submitted": 26,
+        "averageScore": 79,
+        "highestScore": 95,
+        "lowestScore": 58
+      }
+    ],
+    "upcomingTests": [
+      {
+        "id": "TEST003",
+        "subject": "Chemistry",
+        "topic": "Organic Chemistry Basics",
+        "grade": "12A",
+        "scheduledDate": "2024-09-25",
+        "syllabus": ["Alkanes", "Alkenes", "Functional Groups"],
+        "duration": "1h 30m"
+      }
+    ]
+  },
+  "preferences": {
+    "theme": "light",
+    "language": "en",
+    "notifications": {
+      "studentProgress": true,
+      "assignments": true,
+      "behaviorAlerts": true,
+      "parentMessages": false
+    },
+    "dashboard": {
+      "defaultView": "overview",
+      "showInactiveStudents": true,
+      "autoRefresh": true
+    }
+  },
+  "personalStats": {
+    "totalClassesCreated": 12,
+    "totalStudentsTaught": 340,
+    "averageStudentImprovement": "23%",
+    "teachingHours": "2,480h",
+    "coursesCompleted": 45,
+    "certificationsEarned": 8,
+    "rating": 4.8,
+    "testimonials": [
+      {
+        "student": "Emma Johnson",
+        "message": "Dr. Smith makes math so easy to understand!",
+        "date": "2024-09-15"
+      },
+      {
+        "parent": "Sarah Johnson",
+        "message": "My daughter's confidence in math has improved dramatically.",
+        "date": "2024-09-10"
+      }
+    ]
+  }
+}

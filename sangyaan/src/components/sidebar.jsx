@@ -16,37 +16,14 @@ const TeacherSidebar = ({ activeTab, onTabChange, isCollapsed, onToggle }) => {
             description: 'Student management'
         },
         {
-            id: 'analytics',
-            name: 'Analytics',
-            icon: '📈',
-            description: 'Performance analytics'
-        },
-        {
-            id: 'content',
-            name: 'Content',
-            icon: '📚',
-            description: 'Manage content',
-            children: [
-                { id: 'quizzes', name: 'Quizzes', icon: '❓' },
-                { id: 'lessons', name: 'Lessons', icon: '📖' },
-                { id: 'assignments', name: 'Assignments', icon: '📝' }
-            ]
-        },
-        {
-            id: 'reports',
-            name: 'Reports',
-            icon: '📋',
-            description: 'Generate reports'
-        },
-        {
-            id: 'settings',
-            name: 'Settings',
-            icon: '⚙️',
-            description: 'Dashboard settings'
+            id: 'classes',
+            name: 'Classes',
+            icon: '🏫',
+            description: 'Class management'
         }
     ];
 
-    const [expandedGroups, setExpandedGroups] = React.useState(['content']);
+    const [expandedGroups, setExpandedGroups] = React.useState([]);
 
     const handleGroupToggle = (groupId) => {
         setExpandedGroups(prev =>
